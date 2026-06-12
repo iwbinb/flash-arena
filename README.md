@@ -1,5 +1,7 @@
 # Flash Arena
 
+[![Verify](https://github.com/iwbinb/flash-arena/actions/workflows/verify.yml/badge.svg)](https://github.com/iwbinb/flash-arena/actions/workflows/verify.yml)
+
 Real-time trading battles on Solana.
 
 Flash Arena is a trading competition app for Solana Blitz v5. Players join short market rounds, open long or short positions with demo balances, and compete on live PnL. The project is designed to showcase fast, onchain-feeling trading UX with MagicBlock Ephemeral Rollups while avoiding the risk and complexity of real-money trading.
@@ -94,6 +96,10 @@ Full pre-submission verification:
 ```bash
 npm run verify
 ```
+
+GitHub verification:
+
+- The public `Verify` workflow runs `npm run verify` on pushes and pull requests to `main`.
 
 Deploy to Cloudflare Pages:
 

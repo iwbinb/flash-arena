@@ -1,5 +1,7 @@
 # Flash Arena
 
+[![Verify](https://github.com/iwbinb/flash-arena/actions/workflows/verify.yml/badge.svg)](https://github.com/iwbinb/flash-arena/actions/workflows/verify.yml)
+
 Solana 上的实时交易竞技场。
 
 Flash Arena 是为 Solana Blitz v5 设计的交易竞赛应用。玩家进入限时交易回合，使用模拟资金开多或开空，并根据实时 PnL 排行。项目目标是用 MagicBlock Ephemeral Rollups 展示低延迟、接近实时的链上交易体验，同时避免真实资金交易带来的风险和复杂度。
@@ -94,6 +96,10 @@ npm run smoke
 ```bash
 npm run verify
 ```
+
+GitHub 验证：
+
+- 公开的 `Verify` workflow 会在 push 和 pull request 到 `main` 时运行 `npm run verify`。
 
 部署到 Cloudflare Pages：
 

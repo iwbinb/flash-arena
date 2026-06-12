@@ -38,5 +38,6 @@
 - [ ] Submission pack explains judging flow, demo video script, and MagicBlock ER fit.
 - [ ] Deployment instructions are included.
 - [ ] `npm run check`, `npm run build`, `npm run smoke`, `npm run privacy`, and `npm run verify` pass.
+- [ ] GitHub Actions `Verify` workflow passes on `main`.
 - [ ] Demo video shows wallet, round, trade, PnL, leaderboard, and ER log.
 - [ ] Submission explains how MagicBlock Ephemeral Rollups fit the arena state layer.
