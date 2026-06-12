@@ -54,6 +54,7 @@ Flash Arena 建议使用混合数据方案：
 - 可展开排行榜、可筛选 Recent trades 交易流和 ER settlement log
 - RPC 健康状态展示
 - 可复制提交摘要和可下载回合报告
+- 应用内提交就绪面板，用于评委验收状态展示
 - 浏览器本地持久化：demo 持仓、订单、交易和结算历史刷新后可恢复
 - PWA metadata、favicon 和移动端主题色
 - Cloudflare Pages 部署准备

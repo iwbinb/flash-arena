@@ -665,6 +665,18 @@ function App() {
         <ErLog events={erEvents} />
       </section>
 
+      <SubmissionReadiness
+        roundStatus={roundStatus}
+        feedStatus={feedStatus}
+        availableBalance={availableBalance}
+        positions={positions}
+        recentTrades={recentTrades}
+        leaderboard={leaderboard}
+        erEvents={erEvents}
+        onCopySummary={copySubmissionSummary}
+        onExportReport={exportRoundReport}
+      />
+
       <StatusFooter
         availableBalance={availableBalance}
         throughput={12842}
@@ -1392,6 +1404,69 @@ function ErLog({ events }: { events: ErEvent[] }) {
               {event.status === "failed" ? <XCircle size={14} /> : <CheckCircle2 size={14} />}
               {event.status}
             </b>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function SubmissionReadiness({
+  roundStatus,
+  feedStatus,
+  availableBalance,
+  positions,
+  recentTrades,
+  leaderboard,
+  erEvents,
+  onCopySummary,
+  onExportReport
+}: {
+  roundStatus: RoundStatus;
+  feedStatus: FeedStatus;
+  availableBalance: number;
+  positions: Position[];
+  recentTrades: TradeEvent[];
+  leaderboard: Competitor[];
+  erEvents: ErEvent[];
+  onCopySummary: () => void;
+  onExportReport: () => void;
+}) {
+  const items = [
+    { label: "Arena live", ready: roundStatus === "live" || roundStatus === "settling" },
+    { label: "Demo funds", ready: Number.isFinite(availableBalance) && availableBalance >= 0 },
+    { label: "Market feed", ready: feedStatus !== "loading" },
+    { label: "Trade loop", ready: positions.length > 0 || recentTrades.length > 0 },
+    { label: "Competition", ready: leaderboard.length >= 7 },
+    { label: "ER evidence", ready: erEvents.length > 0 }
+  ];
+  const readyCount = items.filter((item) => item.ready).length;
+
+  return (
+    <section className="panel readiness-panel">
+      <div className="readiness-head">
+        <div>
+          <span>Submission Readiness</span>
+          <strong>
+            {readyCount}/{items.length}
+          </strong>
+        </div>
+        <div className="readiness-actions">
+          <button onClick={onCopySummary}>
+            <Clipboard size={14} />
+            Summary
+          </button>
+          <button onClick={onExportReport}>
+            <Download size={14} />
+            Report
+          </button>
+        </div>
+      </div>
+      <div className="readiness-items">
+        {items.map((item) => (
+          <div key={item.label} className={item.ready ? "ready" : "waiting"}>
+            {item.ready ? <CheckCircle2 size={15} /> : <Clock3 size={15} />}
+            <span>{item.label}</span>
           </div>
         ))}
       </div>

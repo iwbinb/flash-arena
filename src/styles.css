@@ -1185,6 +1185,95 @@ input[type="range"] {
   color: var(--red);
 }
 
+.readiness-panel {
+  margin-top: 10px;
+  min-height: 62px;
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.readiness-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-right: 1px solid var(--border-soft);
+}
+
+.readiness-head span {
+  display: block;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.065em;
+  font-size: 11px;
+}
+
+.readiness-head strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--lime);
+  font-family: var(--mono);
+  font-size: 22px;
+  line-height: 1;
+}
+
+.readiness-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.readiness-actions button {
+  min-height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.readiness-items {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.readiness-items div {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 12px;
+  border-right: 1px solid var(--border-soft);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+  font-size: 10px;
+}
+
+.readiness-items div:last-child {
+  border-right: 0;
+}
+
+.readiness-items .ready {
+  color: #d9ffc2;
+}
+
+.readiness-items .ready svg {
+  color: var(--green);
+}
+
+.readiness-items .waiting svg {
+  color: var(--amber);
+}
+
 .status-footer {
   margin-top: 10px;
   min-height: 46px;
@@ -1496,6 +1585,24 @@ input[type="range"] {
 
   .podium {
     grid-template-columns: 1fr;
+  }
+
+  .readiness-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .readiness-head {
+    border-right: 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .readiness-items {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .readiness-items div {
+    min-height: 38px;
+    border-bottom: 1px solid var(--border-soft);
   }
 
   .status-footer {

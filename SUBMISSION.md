@@ -30,8 +30,9 @@ Flash Arena turns Solana trading into a fast competitive arena using live market
 9. Toggle the full leaderboard and My trades filter.
 10. Close a position.
 11. Settle the current round and confirm recent trades plus ER settlement logs update.
-12. Copy the submission summary and export the round report.
-13. Refresh the page and confirm demo positions, activity, and settlement history persist.
+12. Check the Submission Readiness panel.
+13. Copy the submission summary and export the round report.
+14. Refresh the page and confirm demo positions, activity, and settlement history persist.
 
 ## MagicBlock Ephemeral Rollups Fit
 
@@ -54,7 +55,7 @@ The hackathon demo should be easy for judges to run without deposits, custody, o
 - P3 Market feed: public live prices with fallback simulator, chart timeframe controls, candle and line modes.
 - P4 Competition: expandable leaderboard, filterable recent trades, rank, final settlement, round reset, exportable round evidence.
 - P5 Solana and MagicBlock: wallet identity, devnet RPC health, ER settlement log, MagicBlock-ready state model.
-- P6 Delivery: README, Chinese README, requirements, deployment guide, smoke check, Cloudflare Pages config.
+- P6 Delivery: README, Chinese README, requirements, deployment guide, smoke check, CI, readiness panel, Cloudflare Pages config.
 
 ## Demo Video Script
 

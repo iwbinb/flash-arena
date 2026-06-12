@@ -54,6 +54,7 @@ This keeps the product credible for a trading hackathon while keeping implementa
 - Expandable leaderboard, filterable recent trades stream, and ER settlement log
 - RPC health surface
 - Copyable submission summary and downloadable round report
+- In-app submission readiness panel for judge-facing acceptance status
 - Local browser persistence for demo positions, orders, trades, and settlement history
 - PWA metadata, favicon, and mobile theme color
 - Cloudflare Pages-ready deployment setup

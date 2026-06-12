@@ -42,6 +42,7 @@ const requiredUiCopy = [
   "No real funds required",
   "Leaderboard",
   "ER Settlement Log",
+  "Submission Readiness",
   "Submission summary copied",
   "Round report exported"
 ];
