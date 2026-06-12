@@ -57,6 +57,7 @@ This keeps the product credible for a trading hackathon while keeping implementa
 - MagicBlock ER pipeline showing trade intent, ephemeral state, batch/root, and leaderboard snapshot
 - RPC health surface
 - Copyable submission summary and downloadable round report
+- Exported round report includes readiness, Judge Flow, and P1-P6 coverage evidence
 - In-app submission readiness panel for judge-facing acceptance status
 - In-app Judge Flow that tracks the key demo actions during review
 - In-app P1-P6 coverage scorecard for judge-facing acceptance evidence

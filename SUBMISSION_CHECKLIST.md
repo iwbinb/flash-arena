@@ -23,6 +23,7 @@
 - [ ] ER settlement log updates after arena actions.
 - [ ] ER pipeline explains trade intent, ephemeral state, batch/root, and leaderboard snapshot.
 - [ ] Submission summary can be copied and round report can be exported.
+- [ ] Round report includes readiness, Judge Flow, and P1-P6 coverage evidence.
 - [ ] Submission readiness panel reflects core demo status.
 - [ ] P1-P6 Coverage scorecard reflects the demo state.
 - [ ] Demo button stages trade, queued order, leaderboard, and ER evidence for fast review.

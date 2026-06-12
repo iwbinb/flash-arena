@@ -57,6 +57,7 @@ Flash Arena 建议使用混合数据方案：
 - MagicBlock ER pipeline，展示 trade intent、ephemeral state、batch/root 和 leaderboard snapshot
 - RPC 健康状态展示
 - 可复制提交摘要和可下载回合报告
+- 导出的 round report 包含 readiness、Judge Flow 和 P1-P6 coverage 证据
 - 应用内提交就绪面板，用于评委验收状态展示
 - 应用内 Judge Flow，跟踪评审过程中的关键 demo 操作
 - 应用内 P1-P6 coverage scorecard，直接展示评委验收证据

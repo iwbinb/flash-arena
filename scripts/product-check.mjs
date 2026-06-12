@@ -82,6 +82,7 @@ const checks = [
       ["round settlement exists", includes(source.app, "const settleRound") && includes(source.app, "Round Settled")],
       ["settlement captures leaderboard snapshot", includes(source.app, "Leaderboard Snapshot")],
       ["report export includes leaderboard and trades", includes(source.app, "exportRoundReport") && includes(source.app, "leaderboard.slice") && includes(source.app, "recentTrades.slice")],
+      ["report export includes judge flow and P1-P6 evidence", includes(source.app, "submissionEvidence") && includes(source.app, "judgeFlow") && includes(source.app, "p1p6Coverage")],
       ["judge flow tracks review actions", includes(source.app, "Judge Flow") && includes(source.app, "Order queue tested") && includes(source.app, "Evidence exported") && includes(source.styles, ".judge-flow")],
       ["requirements document defines P4", includes(source.requirements, "P4: Competition Layer")]
     ]

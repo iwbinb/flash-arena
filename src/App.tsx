@@ -77,6 +77,66 @@ const initialPositions: Position[] = [
   }
 ];
 
+const buildSubmissionEvidence = ({
+  roundStatus,
+  feedStatus,
+  availableBalance,
+  positions,
+  recentTrades,
+  leaderboard,
+  erEvents,
+  wallet,
+  pendingOrders,
+  summaryCopied,
+  reportExported
+}: {
+  roundStatus: RoundStatus;
+  feedStatus: FeedStatus;
+  availableBalance: number;
+  positions: Position[];
+  recentTrades: TradeEvent[];
+  leaderboard: Competitor[];
+  erEvents: ErEvent[];
+  wallet: WalletState;
+  pendingOrders: PendingOrder[];
+  summaryCopied: boolean;
+  reportExported: boolean;
+}) => {
+  const readinessItems = [
+    { label: "Arena live", ready: roundStatus === "live" || roundStatus === "settling" },
+    { label: "Demo funds", ready: Number.isFinite(availableBalance) && availableBalance >= 0 },
+    { label: "Market feed", ready: feedStatus !== "loading" },
+    { label: "Trade loop", ready: positions.length > 0 || recentTrades.length > 0 },
+    { label: "Competition", ready: leaderboard.length >= 7 },
+    { label: "ER evidence", ready: erEvents.length > 0 }
+  ];
+  const judgeFlow = [
+    { label: "Open arena", ready: roundStatus === "live" || roundStatus === "settling" },
+    { label: "Identity ready", ready: wallet.status === "connected" || wallet.status === "disconnected" || wallet.status === "unavailable" },
+    { label: "Trade placed", ready: positions.length > 0 || recentTrades.some((trade) => trade.type === "open" || trade.type === "triggered") },
+    { label: "Order queue tested", ready: pendingOrders.length > 0 || erEvents.some((event) => event.event.includes("Conditional Order")) },
+    { label: "Settlement evidence", ready: erEvents.some((event) => event.event.includes("Settled") || event.event.includes("Snapshot")) },
+    { label: "Evidence exported", ready: summaryCopied || reportExported }
+  ];
+  const coverageItems = [
+    { code: "P1", label: "Arena", ready: roundStatus === "live" || roundStatus === "settling", evidence: "Round, markets, demo USDC" },
+    { code: "P2", label: "Trading", ready: positions.length > 0 || pendingOrders.length > 0, evidence: "Risk, order, position loop" },
+    { code: "P3", label: "Market Data", ready: feedStatus !== "loading", evidence: "Live or fallback feed" },
+    { code: "P4", label: "Competition", ready: leaderboard.length >= 7 && recentTrades.length > 0, evidence: "Rank, trades, settlement" },
+    { code: "P5", label: "Solana / ER", ready: erEvents.some((event) => event.event.includes("Trade") || event.event.includes("Snapshot")), evidence: "Wallet identity, ER state log" },
+    { code: "P6", label: "Delivery", ready: summaryCopied || reportExported, evidence: "Summary and report evidence" }
+  ];
+
+  return {
+    readinessItems,
+    judgeFlow,
+    coverageItems,
+    readinessReadyCount: readinessItems.filter((item) => item.ready).length,
+    judgeFlowReadyCount: judgeFlow.filter((item) => item.ready).length,
+    coverageReadyCount: coverageItems.filter((item) => item.ready).length
+  };
+};
+
 function usePersistentState<T>(key: string, initialValue: T) {
   const [value, setValue] = useState<T>(() => {
     if (typeof window === "undefined") return initialValue;
@@ -590,8 +650,22 @@ function App() {
     pushToast("Demo flow staged. Export evidence to finish review.");
   };
 
-  const buildRoundSummary = () =>
-    [
+  const buildRoundSummary = () => {
+    const evidence = buildSubmissionEvidence({
+      roundStatus,
+      feedStatus,
+      availableBalance,
+      positions,
+      recentTrades,
+      leaderboard,
+      erEvents,
+      wallet,
+      pendingOrders,
+      summaryCopied,
+      reportExported
+    });
+
+    return [
       `Flash Arena - Round 12 (${formatRoundStatus(roundStatus)})`,
       `Equity: ${formatCurrency(equity)} demo USDC`,
       `PnL: ${formatSigned(equity - DEMO_STARTING_BALANCE)} (${formatPercent(pnlPercent)})`,
@@ -599,9 +673,12 @@ function App() {
       `Open positions: ${positions.length}`,
       `Queued orders: ${pendingOrders.length}`,
       `Latest ER root: ${erEvents[0]?.root ?? "n/a"}`,
+      `Judge Flow: ${evidence.judgeFlowReadyCount}/${evidence.judgeFlow.length}`,
+      `P1-P6 Coverage: ${evidence.coverageReadyCount}/${evidence.coverageItems.length}`,
       "Verification: npm run verify and GitHub Actions Verify",
       "Safety: demo funds only, no real user funds required"
     ].join("\n");
+  };
 
   const copySubmissionSummary = async () => {
     const summary = buildRoundSummary();
@@ -622,6 +699,19 @@ function App() {
   };
 
   const exportRoundReport = () => {
+    const submissionEvidence = buildSubmissionEvidence({
+      roundStatus,
+      feedStatus,
+      availableBalance,
+      positions,
+      recentTrades,
+      leaderboard,
+      erEvents,
+      wallet,
+      pendingOrders,
+      summaryCopied,
+      reportExported: true
+    });
     const report = {
       project: "Flash Arena",
       round: "Round 12",
@@ -651,6 +741,23 @@ function App() {
       leaderboard: leaderboard.slice(0, 12),
       recentTrades: recentTrades.slice(0, 10),
       erEvents: erEvents.slice(0, 10),
+      submissionEvidence: {
+        readiness: {
+          ready: submissionEvidence.readinessReadyCount,
+          total: submissionEvidence.readinessItems.length,
+          items: submissionEvidence.readinessItems
+        },
+        judgeFlow: {
+          ready: submissionEvidence.judgeFlowReadyCount,
+          total: submissionEvidence.judgeFlow.length,
+          steps: submissionEvidence.judgeFlow
+        },
+        p1p6Coverage: {
+          ready: submissionEvidence.coverageReadyCount,
+          total: submissionEvidence.coverageItems.length,
+          items: submissionEvidence.coverageItems
+        }
+      },
       verification: {
         localCommand: "npm run verify",
         ciWorkflow: "GitHub Actions Verify",
@@ -1618,33 +1725,19 @@ function SubmissionReadiness({
   onCopySummary: () => void;
   onExportReport: () => void;
 }) {
-  const items = [
-    { label: "Arena live", ready: roundStatus === "live" || roundStatus === "settling" },
-    { label: "Demo funds", ready: Number.isFinite(availableBalance) && availableBalance >= 0 },
-    { label: "Market feed", ready: feedStatus !== "loading" },
-    { label: "Trade loop", ready: positions.length > 0 || recentTrades.length > 0 },
-    { label: "Competition", ready: leaderboard.length >= 7 },
-    { label: "ER evidence", ready: erEvents.length > 0 }
-  ];
-  const judgeFlow = [
-    { label: "Open arena", ready: roundStatus === "live" || roundStatus === "settling" },
-    { label: "Identity ready", ready: wallet.status === "connected" || wallet.status === "disconnected" || wallet.status === "unavailable" },
-    { label: "Trade placed", ready: positions.length > 0 || recentTrades.some((trade) => trade.type === "open" || trade.type === "triggered") },
-    { label: "Order queue tested", ready: pendingOrders.length > 0 || erEvents.some((event) => event.event.includes("Conditional Order")) },
-    { label: "Settlement evidence", ready: erEvents.some((event) => event.event.includes("Settled") || event.event.includes("Snapshot")) },
-    { label: "Evidence exported", ready: summaryCopied || reportExported }
-  ];
-  const coverageItems = [
-    { code: "P1", label: "Arena", ready: roundStatus === "live" || roundStatus === "settling", evidence: "Round, markets, demo USDC" },
-    { code: "P2", label: "Trading", ready: positions.length > 0 || pendingOrders.length > 0, evidence: "Risk, order, position loop" },
-    { code: "P3", label: "Market Data", ready: feedStatus !== "loading", evidence: "Live or fallback feed" },
-    { code: "P4", label: "Competition", ready: leaderboard.length >= 7 && recentTrades.length > 0, evidence: "Rank, trades, settlement" },
-    { code: "P5", label: "Solana / ER", ready: erEvents.some((event) => event.event.includes("Trade") || event.event.includes("Snapshot")), evidence: "Wallet identity, ER state log" },
-    { code: "P6", label: "Delivery", ready: summaryCopied || reportExported, evidence: "Summary and report evidence" }
-  ];
-  const readyCount = items.filter((item) => item.ready).length;
-  const flowReadyCount = judgeFlow.filter((item) => item.ready).length;
-  const coverageReadyCount = coverageItems.filter((item) => item.ready).length;
+  const evidence = buildSubmissionEvidence({
+    roundStatus,
+    feedStatus,
+    availableBalance,
+    positions,
+    recentTrades,
+    leaderboard,
+    erEvents,
+    wallet,
+    pendingOrders,
+    summaryCopied,
+    reportExported
+  });
 
   return (
     <section className="panel readiness-panel">
@@ -1652,7 +1745,7 @@ function SubmissionReadiness({
         <div>
           <span>Submission Readiness</span>
           <strong>
-            {readyCount}/{items.length}
+            {evidence.readinessReadyCount}/{evidence.readinessItems.length}
           </strong>
         </div>
         <div className="readiness-actions">
@@ -1671,7 +1764,7 @@ function SubmissionReadiness({
         </div>
       </div>
       <div className="readiness-items">
-        {items.map((item) => (
+        {evidence.readinessItems.map((item) => (
           <div key={item.label} className={item.ready ? "ready" : "waiting"}>
             {item.ready ? <CheckCircle2 size={15} /> : <Clock3 size={15} />}
             <span>{item.label}</span>
@@ -1681,10 +1774,10 @@ function SubmissionReadiness({
       <div className="judge-flow">
         <div className="judge-flow-title">
           <span>Judge Flow</span>
-          <strong>{flowReadyCount}/{judgeFlow.length}</strong>
+          <strong>{evidence.judgeFlowReadyCount}/{evidence.judgeFlow.length}</strong>
         </div>
         <div className="judge-flow-steps">
-          {judgeFlow.map((item, index) => (
+          {evidence.judgeFlow.map((item, index) => (
             <div key={item.label} className={item.ready ? "ready" : "waiting"}>
               <b>{index + 1}</b>
               <span>{item.label}</span>
@@ -1696,10 +1789,10 @@ function SubmissionReadiness({
       <div className="coverage-scorecard">
         <div className="coverage-scorecard-title">
           <span>P1-P6 Coverage</span>
-          <strong>{coverageReadyCount}/{coverageItems.length}</strong>
+          <strong>{evidence.coverageReadyCount}/{evidence.coverageItems.length}</strong>
         </div>
         <div className="coverage-grid">
-          {coverageItems.map((item) => (
+          {evidence.coverageItems.map((item) => (
             <div key={item.code} className={item.ready ? "ready" : "waiting"}>
               <b>{item.code}</b>
               <span>{item.label}</span>
