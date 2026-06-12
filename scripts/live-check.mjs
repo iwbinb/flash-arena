@@ -119,7 +119,7 @@ export const runLiveCheck = async (rawUrl, fetchImpl = fetch) => {
     fail("X-Content-Type-Options header must be nosniff");
   }
 
-  return `Live check passed: ${baseUrl} serves the Flash Arena app shell, assets, manifest, favicon, and security headers.`;
+  return `Live check passed: ${baseUrl} serves the Flash Arena app shell, assets, manifest, favicon, demo video, and security headers.`;
 };
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
