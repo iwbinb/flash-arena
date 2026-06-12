@@ -5,7 +5,9 @@ import {
   BarChart3,
   CheckCircle2,
   ChevronDown,
+  Clipboard,
   Clock3,
+  Download,
   Gauge,
   Info,
   Layers3,
@@ -508,6 +510,82 @@ function App() {
     setErEvents([makeErEvent("Round Reset", "New demo round initialized", "synced"), ...seededErEvents]);
   };
 
+  const buildRoundSummary = () =>
+    [
+      `Flash Arena - Round 12 (${formatRoundStatus(roundStatus)})`,
+      `Equity: ${formatCurrency(equity)} demo USDC`,
+      `PnL: ${formatSigned(equity - DEMO_STARTING_BALANCE)} (${formatPercent(pnlPercent)})`,
+      `Rank: #${userRank}`,
+      `Open positions: ${positions.length}`,
+      `Queued orders: ${pendingOrders.length}`,
+      `Latest ER root: ${erEvents[0]?.root ?? "n/a"}`,
+      "Verification: npm run verify and GitHub Actions Verify",
+      "Safety: demo funds only, no real user funds required"
+    ].join("\n");
+
+  const copySubmissionSummary = async () => {
+    const summary = buildRoundSummary();
+    try {
+      await navigator.clipboard.writeText(summary);
+      pushToast("Submission summary copied.");
+    } catch {
+      const url = URL.createObjectURL(new Blob([summary], { type: "text/plain" }));
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `flash-arena-round-12-summary.txt`;
+      link.click();
+      URL.revokeObjectURL(url);
+      pushToast("Clipboard unavailable. Summary downloaded instead.");
+    }
+  };
+
+  const exportRoundReport = () => {
+    const report = {
+      project: "Flash Arena",
+      round: "Round 12",
+      exportedAt: new Date().toISOString(),
+      status: roundStatus,
+      activeMarket: activeMarket.symbol,
+      wallet: wallet.status === "connected" ? shortAddress(wallet.address) : wallet.status,
+      demoAccount: {
+        startingBalance: DEMO_STARTING_BALANCE,
+        availableBalance,
+        equity,
+        realizedPnl,
+        unrealizedPnl,
+        pnlPercent,
+        rank: userRank
+      },
+      positions: positions.map((position) => {
+        const market = markets.find((item) => item.id === position.marketId);
+        return {
+          ...position,
+          symbol: market?.symbol ?? position.marketId,
+          currentPrice: market?.price ?? null,
+          unrealizedPnl: market ? calculatePositionPnl(position, market.price) : null
+        };
+      }),
+      pendingOrders,
+      leaderboard: leaderboard.slice(0, 12),
+      recentTrades: recentTrades.slice(0, 10),
+      erEvents: erEvents.slice(0, 10),
+      verification: {
+        localCommand: "npm run verify",
+        ciWorkflow: "GitHub Actions Verify",
+        repository: "https://github.com/iwbinb/flash-arena",
+        liveDemo: "Pending Cloudflare Pages deployment authorization"
+      },
+      safety: "Demo funds only. No real user funds are required."
+    };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(report, null, 2)], { type: "application/json" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `flash-arena-round-12-report.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+    pushToast("Round report exported.");
+  };
+
   return (
     <main className="app-shell">
       <TopBar
@@ -593,6 +671,8 @@ function App() {
         erLatency={erLatency}
         feedStatus={feedStatus}
         erRoot={erEvents[0]?.root ?? "9xF3...7b1c"}
+        onCopySummary={copySubmissionSummary}
+        onExportReport={exportRoundReport}
       />
 
       {toast ? <div className="toast">{toast}</div> : null}
@@ -1324,13 +1404,17 @@ function StatusFooter({
   throughput,
   erLatency,
   feedStatus,
-  erRoot
+  erRoot,
+  onCopySummary,
+  onExportReport
 }: {
   availableBalance: number;
   throughput: number;
   erLatency: number | null;
   feedStatus: FeedStatus;
   erRoot: string;
+  onCopySummary: () => void;
+  onExportReport: () => void;
 }) {
   return (
     <footer className="status-footer">
@@ -1358,6 +1442,16 @@ function StatusFooter({
         <RadioTower size={15} />
         <span>{feedStatus === "live" ? "Live prices" : "Fallback active"}</span>
         <strong>{erLatency === null ? "ER delayed" : `Finality ~${Math.max(120, erLatency + 230)}ms`}</strong>
+      </div>
+      <div className="footer-actions">
+        <button onClick={onCopySummary}>
+          <Clipboard size={14} />
+          Summary
+        </button>
+        <button onClick={onExportReport}>
+          <Download size={14} />
+          Export
+        </button>
       </div>
     </footer>
   );

@@ -41,7 +41,9 @@ const requiredUiCopy = [
   "Settle current round",
   "No real funds required",
   "Leaderboard",
-  "ER Settlement Log"
+  "ER Settlement Log",
+  "Submission summary copied",
+  "Round report exported"
 ];
 
 for (const copy of requiredUiCopy) {

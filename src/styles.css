@@ -1100,6 +1100,10 @@ input[type="range"] {
   min-height: 300px;
 }
 
+.lower-grid .leaderboard {
+  min-height: 216px;
+}
+
 .podium {
   min-height: 96px;
   display: grid;
@@ -1188,7 +1192,7 @@ input[type="range"] {
   background: rgba(10, 16, 23, 0.94);
   border-radius: 8px;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr)) minmax(188px, 0.9fr);
   overflow: hidden;
 }
 
@@ -1214,6 +1218,33 @@ input[type="range"] {
   margin-left: auto;
   font-size: 12px;
   white-space: nowrap;
+}
+
+.status-footer .footer-actions {
+  gap: 7px;
+  justify-content: flex-end;
+}
+
+.footer-actions button {
+  min-height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.footer-actions button:hover {
+  border-color: rgba(163, 255, 18, 0.45);
+  color: var(--lime);
 }
 
 .positive {
@@ -1475,5 +1506,13 @@ input[type="range"] {
     min-height: 44px;
     border-right: 0;
     border-bottom: 1px solid var(--border-soft);
+  }
+
+  .status-footer .footer-actions {
+    justify-content: stretch;
+  }
+
+  .footer-actions button {
+    flex: 1;
   }
 }

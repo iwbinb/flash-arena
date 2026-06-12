@@ -30,7 +30,8 @@ Flash Arena turns Solana trading into a fast competitive arena using live market
 9. Toggle the full leaderboard and My trades filter.
 10. Close a position.
 11. Settle the current round and confirm recent trades plus ER settlement logs update.
-12. Refresh the page and confirm demo positions, activity, and settlement history persist.
+12. Copy the submission summary and export the round report.
+13. Refresh the page and confirm demo positions, activity, and settlement history persist.
 
 ## MagicBlock Ephemeral Rollups Fit
 
@@ -51,7 +52,7 @@ The hackathon demo should be easy for judges to run without deposits, custody, o
 - P1 Playable arena: first-screen trading UI, active round, market selector/filter, demo balance, responsive layout.
 - P2 Trading and risk: long, short, market, limit, stop, leverage, margin, fees, liquidation estimate, close, cancel.
 - P3 Market feed: public live prices with fallback simulator, chart timeframe controls, candle and line modes.
-- P4 Competition: expandable leaderboard, filterable recent trades, rank, final settlement, round reset.
+- P4 Competition: expandable leaderboard, filterable recent trades, rank, final settlement, round reset, exportable round evidence.
 - P5 Solana and MagicBlock: wallet identity, devnet RPC health, ER settlement log, MagicBlock-ready state model.
 - P6 Delivery: README, Chinese README, requirements, deployment guide, smoke check, Cloudflare Pages config.
 
@@ -68,7 +69,8 @@ Suggested length: 90 seconds.
 7. Toggle Full leaderboard and My trades.
 8. Close the open position and show recent trades.
 9. Click Settle current round and show the ER Settlement Log.
-10. End on the README or submission pack explaining MagicBlock ER fit and demo-funds safety.
+10. Export the round report and copy the submission summary.
+11. End on the README or submission pack explaining MagicBlock ER fit and demo-funds safety.
 
 ## Final Submission Checklist
 
