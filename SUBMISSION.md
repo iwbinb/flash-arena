@@ -24,7 +24,7 @@ Flash Arena turns Solana trading into a fast competitive arena using live market
 
 1. Open the arena and confirm it starts directly in the trading interface.
 2. Connect a Solana wallet, or continue in demo mode if no wallet is installed.
-3. Select BTC, ETH, SOL, JUP, or BONK.
+3. Use the Demo button to stage a complete review state, or manually select BTC, ETH, SOL, JUP, or BONK.
 4. Toggle market filters, chart timeframe, and candle/line chart modes.
 5. Place a long or short market trade with demo USDC.
 6. Switch to a limit or stop order and confirm it appears in the queued orders panel.
@@ -59,7 +59,7 @@ The hackathon demo should be easy for judges to run without deposits, custody, o
 - P3 Market feed: public live prices with fallback simulator, chart timeframe controls, candle and line modes.
 - P4 Competition: expandable leaderboard, filterable recent trades, rank, final settlement, round reset, exportable round evidence.
 - P5 Solana and MagicBlock: wallet identity, devnet RPC health, ER settlement log, ER pipeline, MagicBlock-ready state model.
-- P6 Delivery: README, Chinese README, requirements, deployment guide, smoke check, CI, readiness panel, Judge Flow, Cloudflare Pages config.
+- P6 Delivery: README, Chinese README, requirements, deployment guide, smoke check, CI, readiness panel, one-click judge demo staging, Judge Flow, Cloudflare Pages config.
 
 ## Demo Video Script
 
@@ -67,7 +67,7 @@ Suggested length: 90 seconds.
 
 1. Show the opening screen: Flash Arena, live round, price feed, ER latency, wallet button.
 2. Connect wallet or show demo mode fallback.
-3. Place a long BTC demo trade and point out demo USDC, leverage, and liquidation estimate.
+3. Click Demo or place a long BTC demo trade, then point out demo USDC, leverage, and liquidation estimate.
 4. Show the open position PnL and leaderboard update.
 5. Toggle candle/line mode and show the market rules panel.
 6. Queue a limit or stop order, then cancel it from Queued Orders.

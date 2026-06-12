@@ -16,6 +16,7 @@ import {
   LockKeyhole,
   Medal,
   Plus,
+  PlayCircle,
   RadioTower,
   RefreshCcw,
   ShieldCheck,
@@ -512,6 +513,83 @@ function App() {
     setErEvents([makeErEvent("Round Reset", "New demo round initialized", "synced"), ...seededErEvents]);
   };
 
+  const runJudgeDemo = () => {
+    if (nextRoundTimeout.current) {
+      window.clearTimeout(nextRoundTimeout.current);
+      nextRoundTimeout.current = null;
+    }
+
+    const now = Date.now();
+    const demoMarket = markets.find((market) => market.id === "SOLUSDT") ?? activeMarket;
+    const entryPrice = demoMarket.price * 0.996;
+    const demoPosition: Position = {
+      id: randomId("pos"),
+      marketId: demoMarket.id,
+      side: "long",
+      margin: 800,
+      leverage: 10,
+      size: 8000,
+      entryPrice,
+      openedAt: now - 4200
+    };
+    const demoOrder: PendingOrder = {
+      id: randomId("order"),
+      marketId: demoMarket.id,
+      side: "short",
+      orderType: "stop",
+      triggerPrice: demoMarket.price * 0.985,
+      margin: 320,
+      leverage: 8,
+      createdAt: now - 2600
+    };
+    const demoTrades: TradeEvent[] = [
+      {
+        id: randomId("trade"),
+        time: now - 4200,
+        trader: wallet.status === "connected" ? shortAddress(wallet.address) : "You",
+        side: demoPosition.side,
+        marketId: demoMarket.id,
+        size: demoPosition.size,
+        price: entryPrice,
+        type: "open" as const
+      },
+      {
+        id: randomId("trade"),
+        time: now - 3100,
+        trader: wallet.status === "connected" ? shortAddress(wallet.address) : "You",
+        side: "short" as const,
+        marketId: "BTCUSDT",
+        size: 5200,
+        price: markets.find((market) => market.id === "BTCUSDT")?.price ?? 66100,
+        pnl: 186.42,
+        type: "close" as const
+      },
+      ...seededTrades
+    ].slice(0, 10);
+
+    settlementInFlight.current = false;
+    setActiveMarketId(demoMarket.id);
+    setSide("long");
+    setOrderType("stop");
+    setMargin(demoPosition.margin);
+    setLeverage(demoPosition.leverage);
+    setTriggerPrice(demoOrder.triggerPrice);
+    setRoundSeconds(roundLengthSeconds);
+    setRealizedPnl(186.42);
+    setPositions([demoPosition]);
+    setPendingOrders([demoOrder]);
+    setRecentTrades(demoTrades);
+    setErEvents([
+      makeErEvent("Leaderboard Snapshot", `Rank #${userRank} captured`, "synced"),
+      makeErEvent("State Root Update", "Demo account and rank committed", "synced"),
+      makeErEvent("Batch Committed", "Review flow sealed in ER batch", "synced"),
+      makeErEvent("Conditional Order Queued", `STOP SHORT ${demoMarket.symbol} @ ${formatPrice(demoOrder.triggerPrice)}`, "pending"),
+      makeErEvent("Trade Accepted", `LONG ${demoMarket.symbol}`, "synced"),
+      ...seededErEvents
+    ].slice(0, 10));
+    pushToast("Demo flow staged. Export evidence to finish review.");
+  };
+
   const buildRoundSummary = () =>
     [
       `Flash Arena - Round 12 (${formatRoundStatus(roundStatus)})`,
@@ -689,6 +767,7 @@ function App() {
         pendingOrders={pendingOrders}
         summaryCopied={summaryCopied}
         reportExported={reportExported}
+        onRunDemo={runJudgeDemo}
         onCopySummary={copySubmissionSummary}
         onExportReport={exportRoundReport}
       />
@@ -1520,6 +1599,7 @@ function SubmissionReadiness({
   pendingOrders,
   summaryCopied,
   reportExported,
+  onRunDemo,
   onCopySummary,
   onExportReport
 }: {
@@ -1534,6 +1614,7 @@ function SubmissionReadiness({
   pendingOrders: PendingOrder[];
   summaryCopied: boolean;
   reportExported: boolean;
+  onRunDemo: () => void;
   onCopySummary: () => void;
   onExportReport: () => void;
 }) {
@@ -1566,6 +1647,10 @@ function SubmissionReadiness({
           </strong>
         </div>
         <div className="readiness-actions">
+          <button onClick={onRunDemo}>
+            <PlayCircle size={14} />
+            Demo
+          </button>
           <button onClick={onCopySummary}>
             <Clipboard size={14} />
             Summary
