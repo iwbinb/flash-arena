@@ -620,7 +620,13 @@ function App() {
           <PriceChart market={activeMarket} />
           <div className="mobile-tabs" role="tablist" aria-label="Arena sections">
             {(["trade", "positions", "leaderboard", "activity"] as const).map((tab) => (
-              <button key={tab} className={mobileTab === tab ? "active" : ""} onClick={() => setMobileTab(tab)}>
+              <button
+                key={tab}
+                role="tab"
+                aria-selected={mobileTab === tab}
+                className={mobileTab === tab ? "active" : ""}
+                onClick={() => setMobileTab(tab)}
+              >
                 {tab}
               </button>
             ))}
@@ -841,7 +847,7 @@ function MarketList({
     <section className="panel market-list">
       <div className="panel-title">
         <span>Markets</span>
-        <button className="text-button" onClick={() => setMarketFilter(nextFilter)}>
+        <button className="text-button" aria-label={`Market filter: ${filterLabel}`} onClick={() => setMarketFilter(nextFilter)}>
           {filterLabel} <ChevronDown size={14} />
         </button>
       </div>
@@ -849,6 +855,7 @@ function MarketList({
         <button
           key={market.id}
           className={`market-row ${activeMarketId === market.id ? "selected" : ""}`}
+          aria-pressed={activeMarketId === market.id}
           onClick={() => onSelect(market.id)}
           style={{ "--market-accent": market.accent } as CSSProperties}
         >
@@ -864,7 +871,7 @@ function MarketList({
           <span className={`mini-badge ${market.status}`}>{market.status}</span>
         </button>
       ))}
-      <button className={`market-rules ${showRules ? "open" : ""}`} onClick={() => setShowRules((value) => !value)}>
+      <button className={`market-rules ${showRules ? "open" : ""}`} aria-expanded={showRules} onClick={() => setShowRules((value) => !value)}>
         Market info & rules <ChevronDown size={13} />
       </button>
       {showRules ? (
@@ -979,16 +986,16 @@ function PriceChart({ market }: { market: Market }) {
       <div className="chart-toolbar">
         <div className="toolbar-tabs">
           {["1m", "5m", "15m", "1h", "4h", "1D"].map((tab) => (
-            <button key={tab} className={tab === timeframe ? "selected" : ""} onClick={() => setTimeframe(tab)}>
+            <button key={tab} aria-pressed={tab === timeframe} className={tab === timeframe ? "selected" : ""} onClick={() => setTimeframe(tab)}>
               {tab}
             </button>
           ))}
         </div>
         <div className="chart-mode">
-          <button className={chartMode === "candles" ? "selected" : ""} onClick={() => setChartMode("candles")}>
+          <button aria-pressed={chartMode === "candles"} className={chartMode === "candles" ? "selected" : ""} onClick={() => setChartMode("candles")}>
             <BarChart3 size={14} /> Candles
           </button>
-          <button className={chartMode === "line" ? "selected" : ""} onClick={() => setChartMode("line")}>
+          <button aria-pressed={chartMode === "line"} className={chartMode === "line" ? "selected" : ""} onClick={() => setChartMode("line")}>
             <LineChart size={14} /> Line
           </button>
         </div>
@@ -1107,16 +1114,16 @@ function TradeTicket({
         <SlidersHorizontal size={17} />
       </div>
       <div className="side-switch">
-        <button className={side === "long" ? "long active" : "long"} onClick={() => onSideChange("long")}>
+        <button aria-pressed={side === "long"} className={side === "long" ? "long active" : "long"} onClick={() => onSideChange("long")}>
           Long <ArrowUpRight size={17} />
         </button>
-        <button className={side === "short" ? "short active" : "short"} onClick={() => onSideChange("short")}>
+        <button aria-pressed={side === "short"} className={side === "short" ? "short active" : "short"} onClick={() => onSideChange("short")}>
           Short <ArrowDownRight size={17} />
         </button>
       </div>
       <div className="order-tabs">
         {(["market", "limit", "stop"] as const).map((type) => (
-          <button key={type} className={orderType === type ? "selected" : ""} onClick={() => onOrderTypeChange(type)}>
+          <button key={type} aria-pressed={orderType === type} className={orderType === type ? "selected" : ""} onClick={() => onOrderTypeChange(type)}>
             {type}
           </button>
         ))}
@@ -1293,7 +1300,7 @@ function Leaderboard({ items }: { items: Competitor[] }) {
     <section className="panel leaderboard">
       <div className="panel-title">
         <span>Leaderboard</span>
-        <button className="text-button" onClick={() => setShowAll((value) => !value)}>
+        <button className="text-button" aria-expanded={showAll} onClick={() => setShowAll((value) => !value)}>
           {showAll ? "Top 7" : "Full leaderboard"}
         </button>
       </div>
@@ -1342,8 +1349,8 @@ function RecentTrades({ trades, markets }: { trades: TradeEvent[]; markets: Mark
       <div className="panel-title">
         <span>Recent Trades</span>
         <div className="mini-toggle">
-          <button className={filter === "all" ? "selected" : ""} onClick={() => setFilter("all")}>All</button>
-          <button className={filter === "mine" ? "selected" : ""} onClick={() => setFilter("mine")}>My trades</button>
+          <button aria-pressed={filter === "all"} className={filter === "all" ? "selected" : ""} onClick={() => setFilter("all")}>All</button>
+          <button aria-pressed={filter === "mine"} className={filter === "mine" ? "selected" : ""} onClick={() => setFilter("mine")}>My trades</button>
         </div>
       </div>
       <div className="table">
@@ -1386,7 +1393,7 @@ function ErLog({ events }: { events: ErEvent[] }) {
     <section className="panel er-log">
       <div className="panel-title">
         <span>ER Settlement Log</span>
-        <button className="text-button" onClick={() => setShowAll((value) => !value)}>{showAll ? "Latest" : "View all"}</button>
+        <button className="text-button" aria-expanded={showAll} onClick={() => setShowAll((value) => !value)}>{showAll ? "Latest" : "View all"}</button>
       </div>
       <div className="table">
         <div className="table-head er-grid">
