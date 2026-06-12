@@ -57,6 +57,7 @@ This keeps the product credible for a trading hackathon while keeping implementa
 - RPC health surface
 - Copyable submission summary and downloadable round report
 - In-app submission readiness panel for judge-facing acceptance status
+- In-app Judge Flow that tracks the key demo actions during review
 - Local browser persistence for demo positions, orders, trades, and settlement history
 - PWA metadata, favicon, and mobile theme color
 - Cloudflare Pages-ready deployment setup

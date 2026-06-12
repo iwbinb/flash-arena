@@ -119,6 +119,8 @@ function App() {
   const [mobileTab, setMobileTab] = useState<"trade" | "positions" | "leaderboard" | "activity">("trade");
   const [toast, setToast] = useState<string | null>(null);
   const [erLatency, setErLatency] = useState<number | null>(18);
+  const [summaryCopied, setSummaryCopied] = useState(false);
+  const [reportExported, setReportExported] = useState(false);
   const tickRef = useRef(0);
   const lastLiveAt = useRef(0);
   const settlementInFlight = useRef(false);
@@ -527,6 +529,7 @@ function App() {
     const summary = buildRoundSummary();
     try {
       await navigator.clipboard.writeText(summary);
+      setSummaryCopied(true);
       pushToast("Submission summary copied.");
     } catch {
       const url = URL.createObjectURL(new Blob([summary], { type: "text/plain" }));
@@ -535,6 +538,7 @@ function App() {
       link.download = `flash-arena-round-12-summary.txt`;
       link.click();
       URL.revokeObjectURL(url);
+      setSummaryCopied(true);
       pushToast("Clipboard unavailable. Summary downloaded instead.");
     }
   };
@@ -583,6 +587,7 @@ function App() {
     link.download = `flash-arena-round-12-report.json`;
     link.click();
     URL.revokeObjectURL(url);
+    setReportExported(true);
     pushToast("Round report exported.");
   };
 
@@ -680,6 +685,10 @@ function App() {
         recentTrades={recentTrades}
         leaderboard={leaderboard}
         erEvents={erEvents}
+        wallet={wallet}
+        pendingOrders={pendingOrders}
+        summaryCopied={summaryCopied}
+        reportExported={reportExported}
         onCopySummary={copySubmissionSummary}
         onExportReport={exportRoundReport}
       />
@@ -1492,6 +1501,10 @@ function SubmissionReadiness({
   recentTrades,
   leaderboard,
   erEvents,
+  wallet,
+  pendingOrders,
+  summaryCopied,
+  reportExported,
   onCopySummary,
   onExportReport
 }: {
@@ -1502,6 +1515,10 @@ function SubmissionReadiness({
   recentTrades: TradeEvent[];
   leaderboard: Competitor[];
   erEvents: ErEvent[];
+  wallet: WalletState;
+  pendingOrders: PendingOrder[];
+  summaryCopied: boolean;
+  reportExported: boolean;
   onCopySummary: () => void;
   onExportReport: () => void;
 }) {
@@ -1513,7 +1530,16 @@ function SubmissionReadiness({
     { label: "Competition", ready: leaderboard.length >= 7 },
     { label: "ER evidence", ready: erEvents.length > 0 }
   ];
+  const judgeFlow = [
+    { label: "Open arena", ready: roundStatus === "live" || roundStatus === "settling" },
+    { label: "Identity ready", ready: wallet.status === "connected" || wallet.status === "disconnected" || wallet.status === "unavailable" },
+    { label: "Trade placed", ready: positions.length > 0 || recentTrades.some((trade) => trade.type === "open" || trade.type === "triggered") },
+    { label: "Order queue tested", ready: pendingOrders.length > 0 || erEvents.some((event) => event.event.includes("Conditional Order")) },
+    { label: "Settlement evidence", ready: erEvents.some((event) => event.event.includes("Settled") || event.event.includes("Snapshot")) },
+    { label: "Evidence exported", ready: summaryCopied || reportExported }
+  ];
   const readyCount = items.filter((item) => item.ready).length;
+  const flowReadyCount = judgeFlow.filter((item) => item.ready).length;
 
   return (
     <section className="panel readiness-panel">
@@ -1542,6 +1568,21 @@ function SubmissionReadiness({
             <span>{item.label}</span>
           </div>
         ))}
+      </div>
+      <div className="judge-flow">
+        <div className="judge-flow-title">
+          <span>Judge Flow</span>
+          <strong>{flowReadyCount}/{judgeFlow.length}</strong>
+        </div>
+        <div className="judge-flow-steps">
+          {judgeFlow.map((item, index) => (
+            <div key={item.label} className={item.ready ? "ready" : "waiting"}>
+              <b>{index + 1}</b>
+              <span>{item.label}</span>
+              {item.ready ? <CheckCircle2 size={14} /> : <Clock3 size={14} />}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

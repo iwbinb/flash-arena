@@ -57,6 +57,7 @@ Flash Arena 建议使用混合数据方案：
 - RPC 健康状态展示
 - 可复制提交摘要和可下载回合报告
 - 应用内提交就绪面板，用于评委验收状态展示
+- 应用内 Judge Flow，跟踪评审过程中的关键 demo 操作
 - 浏览器本地持久化：demo 持仓、订单、交易和结算历史刷新后可恢复
 - PWA metadata、favicon 和移动端主题色
 - Cloudflare Pages 部署准备

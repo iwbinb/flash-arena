@@ -1353,6 +1353,91 @@ input[type="range"] {
   color: var(--amber);
 }
 
+.judge-flow {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  border-top: 1px solid var(--border-soft);
+}
+
+.judge-flow-title {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 12px;
+  border-right: 1px solid var(--border-soft);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 10px;
+}
+
+.judge-flow-title strong {
+  color: var(--cyan);
+  font-family: var(--mono);
+  font-size: 13px;
+}
+
+.judge-flow-steps {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.judge-flow-steps div {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  border-right: 1px solid var(--border-soft);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 9px;
+}
+
+.judge-flow-steps div:last-child {
+  border-right: 0;
+}
+
+.judge-flow-steps b {
+  width: 19px;
+  height: 19px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--weak);
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+.judge-flow-steps span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.judge-flow-steps .ready {
+  color: #d9ffc2;
+}
+
+.judge-flow-steps .ready b {
+  background: rgba(39, 217, 128, 0.16);
+  color: var(--green);
+}
+
+.judge-flow-steps .ready svg {
+  color: var(--green);
+}
+
+.judge-flow-steps .waiting svg {
+  color: var(--amber);
+}
+
 .status-footer {
   margin-top: 10px;
   min-height: 46px;
@@ -1682,6 +1767,29 @@ input[type="range"] {
   .readiness-items div {
     min-height: 38px;
     border-bottom: 1px solid var(--border-soft);
+  }
+
+  .judge-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .judge-flow-title {
+    min-height: 40px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .judge-flow-steps {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .judge-flow-steps div {
+    min-height: 36px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .judge-flow-steps div:nth-child(2n) {
+    border-right: 0;
   }
 
   .status-footer {

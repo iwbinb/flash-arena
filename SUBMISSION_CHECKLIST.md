@@ -23,6 +23,7 @@
 - [ ] ER settlement log updates after arena actions.
 - [ ] Submission summary can be copied and round report can be exported.
 - [ ] Submission readiness panel reflects core demo status.
+- [ ] Judge Flow tracks the key review actions.
 - [ ] Demo positions and activity persist after refresh.
 - [ ] Favicon and app metadata load in the deployed page.
 
