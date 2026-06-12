@@ -42,6 +42,7 @@ This keeps the product credible for a trading hackathon while keeping implementa
 - Mobile tab layout for trading, positions, leaderboard, and activity
 - Wallet-based player identity with demo fallback mode
 - Demo USDC balance per player
+- No real funds required
 - Long and short position simulator
 - Market, limit, and stop order flows
 - Visible conditional order queue with cancel actions
@@ -97,6 +98,12 @@ Full pre-submission verification:
 
 ```bash
 npm run verify
+```
+
+Submission artifact audit:
+
+```bash
+npm run audit
 ```
 
 GitHub verification:

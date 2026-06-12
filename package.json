@@ -9,8 +9,9 @@
     "preview": "vite preview --host 0.0.0.0",
     "check": "tsc -b",
     "smoke": "npm run build && node scripts/smoke-check.mjs",
+    "audit": "node scripts/submission-audit.mjs",
     "privacy": "node scripts/privacy-check.mjs",
-    "verify": "npm run check && npm run smoke && npm run privacy",
+    "verify": "npm run check && npm run smoke && npm run audit && npm run privacy",
     "deploy": "npm run build && wrangler pages deploy dist --project-name flash-arena"
   },
   "dependencies": {

@@ -42,6 +42,7 @@ Flash Arena 建议使用混合数据方案：
 - 移动端 Trade / Positions / Leaderboard / Activity tabs
 - 钱包玩家身份与 demo fallback 模式
 - 每个玩家的模拟 USDC 余额
+- 不需要真实资金
 - 多空仓位模拟器
 - Market / Limit / Stop 订单流程
 - 可见的条件单队列和取消操作
@@ -97,6 +98,12 @@ npm run smoke
 
 ```bash
 npm run verify
+```
+
+提交材料完整性审计：
+
+```bash
+npm run audit
 ```
 
 GitHub 验证：
