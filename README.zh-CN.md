@@ -180,6 +180,7 @@ Flash Arena 初始版本不应要求用户使用真实资金。
 - [需求列表](./REQUIREMENTS.zh-CN.md)
 - [提交材料](./SUBMISSION.md)
 - [部署说明](./DEPLOYMENT.md)
+- [交付证据](./RELEASE_EVIDENCE.md)
 
 ## 当前状态
 

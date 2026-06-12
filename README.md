@@ -180,6 +180,7 @@ Useful project documents:
 - [Requirements](./REQUIREMENTS.md)
 - [Submission Pack](./SUBMISSION.md)
 - [Deployment Guide](./DEPLOYMENT.md)
+- [Release Evidence](./RELEASE_EVIDENCE.md)
 
 ## Status
 

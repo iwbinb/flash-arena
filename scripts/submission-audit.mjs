@@ -36,6 +36,7 @@ const requiredFiles = [
   "REQUIREMENTS.zh-CN.md",
   "SUBMISSION.md",
   "SUBMISSION_CHECKLIST.md",
+  "RELEASE_EVIDENCE.md",
   "DEPLOYMENT.md",
   "wrangler.toml",
   ".github/workflows/verify.yml",
@@ -96,6 +97,14 @@ requireIncludes("SUBMISSION_CHECKLIST.md", [
   "GitHub Actions `Verify` workflow passes",
   "Submission readiness panel reflects core demo status",
   "npm run product-check"
+]);
+
+requireIncludes("RELEASE_EVIDENCE.md", [
+  "P1-P6 Evidence Matrix",
+  "Judge Flow",
+  "Verification Commands",
+  "npm run live-check -- https://your-project.pages.dev",
+  "Cloudflare Pages URL"
 ]);
 
 requireIncludes("DEPLOYMENT.md", [
