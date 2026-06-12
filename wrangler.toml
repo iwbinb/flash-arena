@@ -1,0 +1,6 @@
+name = "flash-arena"
+pages_build_output_dir = "./dist"
+
+[vars]
+VITE_MAGICBLOCK_RPC_URL = "https://api.devnet.solana.com"
+
