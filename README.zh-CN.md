@@ -132,6 +132,12 @@ Flash Arena 初始版本不应要求用户使用真实资金。
 - MagicBlock Ephemeral Rollups 的使用说明
 - 为什么使用模拟余额而不使用真实资金的说明
 
+有用的项目文档：
+
+- [需求列表](./REQUIREMENTS.zh-CN.md)
+- [提交材料](./SUBMISSION.md)
+- [部署说明](./DEPLOYMENT.md)
+
 ## 当前状态
 
 可玩 demo 实现。

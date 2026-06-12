@@ -46,6 +46,7 @@ import {
   randomId
 } from "./sim";
 import type { Competitor, ErEvent, FeedStatus, Market, OrderType, PendingOrder, Position, Side, TradeEvent, WalletState } from "./types";
+import type { RoundStatus } from "./types";
 
 declare global {
   interface Window {
@@ -515,6 +516,7 @@ function App() {
         onConnect={connectWallet}
         onDisconnect={disconnectWallet}
         roundSeconds={roundSeconds}
+        roundStatus={roundStatus}
         feedStatus={feedStatus}
         feedProvider={feedProvider}
         erLatency={erLatency}
@@ -522,13 +524,14 @@ function App() {
 
       <section className="dashboard-grid">
         <aside className="left-rail">
-          <ArenaRooms roundSeconds={roundSeconds} onReset={resetRound} onSettle={() => settleRound("manual")} />
+          <ArenaRooms roundSeconds={roundSeconds} roundStatus={roundStatus} onReset={resetRound} onSettle={() => settleRound("manual")} />
           <MarketList markets={markets} activeMarketId={activeMarketId} onSelect={setActiveMarketId} />
         </aside>
 
         <section className="center-stage">
           <RoundStage
             market={activeMarket}
+            roundStatus={roundStatus}
             roundSeconds={roundSeconds}
             equity={equity}
             pnl={equity - DEMO_STARTING_BALANCE}
@@ -603,6 +606,7 @@ function TopBar({
   onConnect,
   onDisconnect,
   roundSeconds,
+  roundStatus,
   feedStatus,
   feedProvider,
   erLatency
@@ -611,22 +615,25 @@ function TopBar({
   onConnect: () => void;
   onDisconnect: () => void;
   roundSeconds: number;
+  roundStatus: RoundStatus;
   feedStatus: FeedStatus;
   feedProvider: string;
   erLatency: number | null;
 }) {
+  const statusLabel = formatRoundStatus(roundStatus);
+
   return (
     <header className="top-bar">
       <div className="brand">
         <div className="brand-mark">F</div>
         <span>Flash Arena</span>
       </div>
-      <div className="round-pill">
+      <div className={`round-pill ${roundStatus}`}>
         <span>Round 12</span>
-        <b>Live</b>
+        <b>{statusLabel}</b>
       </div>
       <div className="countdown-box" aria-label="Round countdown">
-        <span>Round ends in</span>
+        <span>{roundStatus === "settled" ? "Next round opens" : roundStatus === "settling" ? "Settling in" : "Round ends in"}</span>
         <strong>{formatCountdown(roundSeconds)}</strong>
       </div>
       <StatusItem className="price-source" icon={<RadioTower size={16} />} label="Price source" value={feedProvider} status={feedStatus} />
@@ -648,6 +655,10 @@ function TopBar({
       </button>
     </header>
   );
+}
+
+function formatRoundStatus(status: RoundStatus) {
+  return status === "live" ? "Live" : status === "settling" ? "Settling" : status === "settled" ? "Settled" : "Waiting";
 }
 
 function StatusItem({
@@ -675,7 +686,19 @@ function StatusItem({
   );
 }
 
-function ArenaRooms({ roundSeconds, onReset, onSettle }: { roundSeconds: number; onReset: () => void; onSettle: () => void }) {
+function ArenaRooms({
+  roundSeconds,
+  roundStatus,
+  onReset,
+  onSettle
+}: {
+  roundSeconds: number;
+  roundStatus: RoundStatus;
+  onReset: () => void;
+  onSettle: () => void;
+}) {
+  const statusLabel = formatRoundStatus(roundStatus);
+
   return (
     <section className="panel arena-rooms">
       <div className="panel-title">
@@ -684,12 +707,12 @@ function ArenaRooms({ roundSeconds, onReset, onSettle }: { roundSeconds: number;
           <Plus size={16} />
         </button>
       </div>
-      <RoomRow title="Round 12" meta="Started 14:12:30" status="Live" time={formatCountdown(roundSeconds)} active />
+      <RoomRow title="Round 12" meta={roundStatus === "settled" ? "Final snapshot captured" : "Started 14:12:30"} status={statusLabel} time={formatCountdown(roundSeconds)} active />
       <RoomRow title="Round 11" meta="Settling in 01:17" status="Settling" />
       <RoomRow title="Round 13" meta="Starts in 10:42" status="Next" />
-      <button className="settle-button" onClick={onSettle}>
+      <button className="settle-button" onClick={onSettle} disabled={roundStatus === "settled"}>
         <Trophy size={14} />
-        Settle current round
+        {roundStatus === "settled" ? "Round settled" : "Settle current round"}
       </button>
     </section>
   );
@@ -755,6 +778,7 @@ function RoundStage({
   market,
   markets,
   onMarketChange,
+  roundStatus,
   roundSeconds,
   equity,
   pnl,
@@ -764,17 +788,20 @@ function RoundStage({
   market: Market;
   markets: Market[];
   onMarketChange: (marketId: string) => void;
+  roundStatus: RoundStatus;
   roundSeconds: number;
   equity: number;
   pnl: number;
   pnlPercent: number;
   rank: number;
 }) {
+  const statusLabel = formatRoundStatus(roundStatus);
+
   return (
     <section className="panel round-stage">
       <div className="round-heading">
         <div>
-          <h1>Round 12 <span>Live</span></h1>
+          <h1>Round 12 <span className={roundStatus}>{statusLabel}</span></h1>
           <p>Trade. Compete. Climb.</p>
         </div>
         <label className="market-select">

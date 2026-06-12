@@ -121,6 +121,20 @@ button {
   color: var(--lime);
 }
 
+.round-pill.settling,
+.room-status.settling,
+.round-heading h1 span.settling {
+  color: var(--amber);
+  border-color: rgba(246, 196, 83, 0.42);
+}
+
+.round-pill.settled,
+.room-status.settled,
+.round-heading h1 span.settled {
+  color: var(--muted);
+  border-color: rgba(140, 151, 168, 0.35);
+}
+
 .countdown-box {
   justify-content: center;
   gap: 14px;
@@ -421,6 +435,11 @@ button {
   letter-spacing: 0.06em;
   font-size: 11px;
   cursor: pointer;
+}
+
+.settle-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
 }
 
 .round-stage {

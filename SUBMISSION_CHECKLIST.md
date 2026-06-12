@@ -34,6 +34,7 @@
 - [ ] Public GitHub repository is available.
 - [ ] README explains the product and data strategy.
 - [ ] Public P1-P6 requirements are included.
+- [ ] Submission pack explains judging flow, demo video script, and MagicBlock ER fit.
 - [ ] Deployment instructions are included.
 - [ ] `npm run check`, `npm run build`, and `npm run smoke` pass.
 - [ ] Demo video shows wallet, round, trade, PnL, leaderboard, and ER log.

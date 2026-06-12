@@ -132,6 +132,12 @@ A strong submission should include:
 - Explanation of how MagicBlock Ephemeral Rollups are used
 - Explanation of why demo balances are used instead of real funds
 
+Useful project documents:
+
+- [Requirements](./REQUIREMENTS.md)
+- [Submission Pack](./SUBMISSION.md)
+- [Deployment Guide](./DEPLOYMENT.md)
+
 ## Status
 
 Playable demo implementation.
