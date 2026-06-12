@@ -89,7 +89,8 @@ requireIncludes("SUBMISSION.md", [
   "What Judges Should Try",
   "MagicBlock Ephemeral Rollups Fit",
   "Demo Video Script",
-  "Final Submission Checklist"
+  "Final Submission Checklist",
+  "https://flash-arena.pages.dev"
 ]);
 
 requireIncludes("SUBMISSION_CHECKLIST.md", [
@@ -103,6 +104,7 @@ requireIncludes("RELEASE_EVIDENCE.md", [
   "P1-P6 Evidence Matrix",
   "Judge Flow",
   "Verification Commands",
+  "https://flash-arena.pages.dev",
   "npm run live-check -- https://your-project.pages.dev",
   "Cloudflare Pages URL"
 ]);

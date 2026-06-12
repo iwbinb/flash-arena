@@ -4,6 +4,8 @@
 
 Real-time trading battles on Solana.
 
+Live demo: https://flash-arena.pages.dev
+
 Flash Arena is a trading competition app for Solana Blitz v5. Players join short market rounds, open long or short positions with demo balances, and compete on live PnL. The project is designed to showcase fast, onchain-feeling trading UX with MagicBlock Ephemeral Rollups while avoiding the risk and complexity of real-money trading.
 
 ## Concept

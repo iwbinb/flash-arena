@@ -2,6 +2,8 @@
 
 This file gives judges and reviewers a single place to verify what is ready for the Flash Arena submission.
 
+Cloudflare Pages URL: https://flash-arena.pages.dev
+
 ## Product Scope
 
 Flash Arena is a playable Solana trading arena with demo USDC, live-or-fallback market prices, long and short position flows, competition rounds, leaderboard updates, and a MagicBlock Ephemeral Rollups settlement story.
@@ -47,6 +49,14 @@ After Cloudflare Pages returns a public URL, run:
 npm run live-check -- https://your-project.pages.dev
 ```
 
+Current verified live deployment:
+
+```bash
+npm run live-check -- https://flash-arena.pages.dev
+```
+
+Result: passed.
+
 ## Automated Evidence
 
 - `npm run verify` runs TypeScript, production build smoke check, live-check self-test, submission audit, P1-P6 product evidence check, and privacy scan.
@@ -56,11 +66,11 @@ npm run live-check -- https://your-project.pages.dev
 
 ## Submission Gate
 
-The project is ready for the final live-demo step when:
+The project is ready for final submission when:
 
 - The public repository points to the latest `main` branch.
 - GitHub Actions `Verify` passes on `main`.
 - Cloudflare Pages serves the built app.
 - `npm run live-check -- <live-demo-url>` passes.
 
-Until a Cloudflare Pages URL exists, the remaining external gate is deployment, not product implementation.
+Current status: the live Cloudflare Pages deployment is available at https://flash-arena.pages.dev and the live deployment check passes.
