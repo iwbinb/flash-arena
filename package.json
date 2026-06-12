@@ -10,8 +10,9 @@
     "check": "tsc -b",
     "smoke": "npm run build && node scripts/smoke-check.mjs",
     "audit": "node scripts/submission-audit.mjs",
+    "product-check": "node scripts/product-check.mjs",
     "privacy": "node scripts/privacy-check.mjs",
-    "verify": "npm run check && npm run smoke && npm run audit && npm run privacy",
+    "verify": "npm run check && npm run smoke && npm run audit && npm run product-check && npm run privacy",
     "live-check": "node scripts/live-check.mjs",
     "deploy": "npm run build && wrangler pages deploy dist --project-name flash-arena"
   },

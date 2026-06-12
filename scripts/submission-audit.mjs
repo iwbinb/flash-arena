@@ -22,7 +22,7 @@ const requireIncludes = (file, checks) => {
 };
 
 const packageJson = JSON.parse(read("package.json"));
-const requiredScripts = ["check", "build", "smoke", "audit", "privacy", "verify", "live-check", "deploy"];
+const requiredScripts = ["check", "build", "smoke", "audit", "product-check", "privacy", "verify", "live-check", "deploy"];
 for (const script of requiredScripts) {
   if (!packageJson.scripts?.[script]) {
     fail(`package.json is missing script: ${script}`);
@@ -42,6 +42,7 @@ const requiredFiles = [
   "scripts/live-check.mjs",
   "scripts/smoke-check.mjs",
   "scripts/privacy-check.mjs",
+  "scripts/product-check.mjs",
   "scripts/submission-audit.mjs",
   "public/manifest.webmanifest",
   "public/_headers",
@@ -92,7 +93,8 @@ requireIncludes("SUBMISSION.md", [
 requireIncludes("SUBMISSION_CHECKLIST.md", [
   "Cloudflare Pages deployment is live",
   "GitHub Actions `Verify` workflow passes",
-  "Submission readiness panel reflects core demo status"
+  "Submission readiness panel reflects core demo status",
+  "npm run product-check"
 ]);
 
 requireIncludes("DEPLOYMENT.md", [

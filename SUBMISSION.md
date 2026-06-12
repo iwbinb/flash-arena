@@ -11,6 +11,7 @@ Flash Arena is a real-time demo trading arena for Solana Blitz v5. Players enter
 - Build command: `npm run build`
 - Smoke check: `npm run smoke`
 - Submission artifact audit: `npm run audit`
+- Product coverage check: `npm run product-check`
 - Full verification: `npm run verify`
 - Live deployment check: `npm run live-check -- <live-demo-url>`
 - Public CI: GitHub Actions `Verify` workflow runs the same verification command.
@@ -83,6 +84,7 @@ Suggested length: 90 seconds.
 - `npm run build` passes.
 - `npm run smoke` passes.
 - `npm run audit` passes.
+- `npm run product-check` passes.
 - `npm run privacy` passes.
 - `npm run verify` passes.
 - `npm run live-check -- <live-demo-url>` passes after deployment.

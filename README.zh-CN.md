@@ -94,6 +94,12 @@ npm run build
 npm run smoke
 ```
 
+P1-P6 产品覆盖检查：
+
+```bash
+npm run product-check
+```
+
 提交前完整验证：
 
 ```bash

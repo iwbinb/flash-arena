@@ -94,6 +94,12 @@ Production smoke check:
 npm run smoke
 ```
 
+P1-P6 product coverage check:
+
+```bash
+npm run product-check
+```
+
 Full pre-submission verification:
 
 ```bash
