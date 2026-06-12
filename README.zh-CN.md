@@ -89,6 +89,12 @@ npm run build
 npm run smoke
 ```
 
+提交前完整验证：
+
+```bash
+npm run verify
+```
+
 部署到 Cloudflare Pages：
 
 ```bash

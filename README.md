@@ -89,6 +89,12 @@ Production smoke check:
 npm run smoke
 ```
 
+Full pre-submission verification:
+
+```bash
+npm run verify
+```
+
 Deploy to Cloudflare Pages:
 
 ```bash
