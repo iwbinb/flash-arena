@@ -34,8 +34,9 @@ Flash Arena turns Solana trading into a fast competitive arena using live market
 10. Close a position.
 11. Settle the current round and confirm recent trades plus ER settlement logs update.
 12. Check the Submission Readiness panel and Judge Flow.
-13. Copy the submission summary and export the round report.
-14. Refresh the page and confirm demo positions, activity, and settlement history persist.
+13. Review the P1-P6 Coverage scorecard.
+14. Copy the submission summary and export the round report.
+15. Refresh the page and confirm demo positions, activity, and settlement history persist.
 
 ## MagicBlock Ephemeral Rollups Fit
 
@@ -59,7 +60,7 @@ The hackathon demo should be easy for judges to run without deposits, custody, o
 - P3 Market feed: public live prices with fallback simulator, chart timeframe controls, candle and line modes.
 - P4 Competition: expandable leaderboard, filterable recent trades, rank, final settlement, round reset, exportable round evidence.
 - P5 Solana and MagicBlock: wallet identity, devnet RPC health, ER settlement log, ER pipeline, MagicBlock-ready state model.
-- P6 Delivery: README, Chinese README, requirements, deployment guide, smoke check, CI, readiness panel, one-click judge demo staging, Judge Flow, Cloudflare Pages config.
+- P6 Delivery: README, Chinese README, requirements, deployment guide, smoke check, CI, readiness panel, P1-P6 coverage scorecard, one-click judge demo staging, Judge Flow, Cloudflare Pages config.
 
 ## Demo Video Script
 
@@ -74,7 +75,7 @@ Suggested length: 90 seconds.
 7. Toggle Full leaderboard and My trades.
 8. Close the open position and show recent trades.
 9. Click Settle current round and show the ER Settlement Log.
-10. Export the round report and copy the submission summary, then show the Judge Flow progress.
+10. Show the P1-P6 Coverage scorecard, export the round report, and copy the submission summary.
 11. End on the README or submission pack explaining MagicBlock ER fit and demo-funds safety.
 
 ## Final Submission Checklist

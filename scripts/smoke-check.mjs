@@ -43,6 +43,7 @@ const requiredUiCopy = [
   "Leaderboard",
   "ER Settlement Log",
   "Submission Readiness",
+  "P1-P6 Coverage",
   "Submission summary copied",
   "Round report exported"
 ];

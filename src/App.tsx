@@ -1634,8 +1634,17 @@ function SubmissionReadiness({
     { label: "Settlement evidence", ready: erEvents.some((event) => event.event.includes("Settled") || event.event.includes("Snapshot")) },
     { label: "Evidence exported", ready: summaryCopied || reportExported }
   ];
+  const coverageItems = [
+    { code: "P1", label: "Arena", ready: roundStatus === "live" || roundStatus === "settling", evidence: "Round, markets, demo USDC" },
+    { code: "P2", label: "Trading", ready: positions.length > 0 || pendingOrders.length > 0, evidence: "Risk, order, position loop" },
+    { code: "P3", label: "Market Data", ready: feedStatus !== "loading", evidence: "Live or fallback feed" },
+    { code: "P4", label: "Competition", ready: leaderboard.length >= 7 && recentTrades.length > 0, evidence: "Rank, trades, settlement" },
+    { code: "P5", label: "Solana / ER", ready: erEvents.some((event) => event.event.includes("Trade") || event.event.includes("Snapshot")), evidence: "Wallet identity, ER state log" },
+    { code: "P6", label: "Delivery", ready: summaryCopied || reportExported, evidence: "Summary and report evidence" }
+  ];
   const readyCount = items.filter((item) => item.ready).length;
   const flowReadyCount = judgeFlow.filter((item) => item.ready).length;
+  const coverageReadyCount = coverageItems.filter((item) => item.ready).length;
 
   return (
     <section className="panel readiness-panel">
@@ -1680,6 +1689,21 @@ function SubmissionReadiness({
               <b>{index + 1}</b>
               <span>{item.label}</span>
               {item.ready ? <CheckCircle2 size={14} /> : <Clock3 size={14} />}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="coverage-scorecard">
+        <div className="coverage-scorecard-title">
+          <span>P1-P6 Coverage</span>
+          <strong>{coverageReadyCount}/{coverageItems.length}</strong>
+        </div>
+        <div className="coverage-grid">
+          {coverageItems.map((item) => (
+            <div key={item.code} className={item.ready ? "ready" : "waiting"}>
+              <b>{item.code}</b>
+              <span>{item.label}</span>
+              <small>{item.evidence}</small>
             </div>
           ))}
         </div>

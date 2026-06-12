@@ -59,6 +59,7 @@ Flash Arena 建议使用混合数据方案：
 - 可复制提交摘要和可下载回合报告
 - 应用内提交就绪面板，用于评委验收状态展示
 - 应用内 Judge Flow，跟踪评审过程中的关键 demo 操作
+- 应用内 P1-P6 coverage scorecard，直接展示评委验收证据
 - 一键布置评委 demo 场景，覆盖交易、条件单、排行榜和 ER 证据
 - 浏览器本地持久化：demo 持仓、订单、交易和结算历史刷新后可恢复
 - PWA metadata、favicon 和移动端主题色

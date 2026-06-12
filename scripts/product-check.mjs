@@ -110,6 +110,7 @@ const checks = [
       ["PWA metadata exists", source.manifest.name === "Flash Arena" && source.manifest.start_url === "/" && source.manifest.display === "standalone"],
       ["security headers exist", ["Content-Security-Policy", "X-Frame-Options", "X-Content-Type-Options", "Permissions-Policy"].every((header) => includes(source.headers, header))],
       ["live deployment check exists", existsSync("scripts/live-check.mjs") && includes(source.deployment, "npm run live-check")],
+      ["P1-P6 coverage scorecard exists", includes(source.app, "P1-P6 Coverage") && ["P1", "P2", "P3", "P4", "P5", "P6"].every((code) => includes(source.app, `code: "${code}"`)) && includes(source.styles, ".coverage-scorecard")],
       ["one-click judge demo staging exists", includes(source.app, "runJudgeDemo") && includes(source.app, "Demo flow staged") && includes(source.app, "onRunDemo") && includes(source.styles, ".readiness-actions")],
       ["interactive state semantics exist", includes(source.app, "aria-pressed") && includes(source.app, "aria-selected") && includes(source.app, "aria-expanded")],
       ["requirements document defines P6", includes(source.requirements, "P6: Delivery, QA, and Submission")]
