@@ -96,7 +96,13 @@ export const competitors: Competitor[] = [
   { id: "defi-degen", name: "DeFiDegen", equity: 14653.11, pnl: 4653.11, openPositions: 3, accent: "#f6c453" },
   { id: "gamma-glider", name: "GammaGlider", equity: 12120.77, pnl: 2120.77, openPositions: 1, accent: "#8b5cf6" },
   { id: "leverage-lion", name: "LeverageLion", equity: 11789.45, pnl: 1789.45, openPositions: 2, accent: "#27d980" },
-  { id: "crypto-ninja", name: "CryptoNinja", equity: 10412.9, pnl: 412.9, openPositions: 0, accent: "#ff5c7a" }
+  { id: "crypto-ninja", name: "CryptoNinja", equity: 10412.9, pnl: 412.9, openPositions: 0, accent: "#ff5c7a" },
+  { id: "slot-sprinter", name: "SlotSprinter", equity: 9988.32, pnl: -11.68, openPositions: 1, accent: "#38bdf8" },
+  { id: "neon-maker", name: "NeonMaker", equity: 9742.44, pnl: -257.56, openPositions: 2, accent: "#fb7185" },
+  { id: "jito-jumper", name: "JitoJumper", equity: 9485.16, pnl: -514.84, openPositions: 0, accent: "#f97316" },
+  { id: "oracle-owl", name: "OracleOwl", equity: 9238.7, pnl: -761.3, openPositions: 1, accent: "#06b6d4" },
+  { id: "mev-mage", name: "MevMage", equity: 8814.51, pnl: -1185.49, openPositions: 0, accent: "#c084fc" },
+  { id: "batch-rider", name: "BatchRider", equity: 8520.28, pnl: -1479.72, openPositions: 1, accent: "#84cc16" }
 ];
 
 export const seededTrades: TradeEvent[] = [

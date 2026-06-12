@@ -20,13 +20,15 @@ Flash Arena turns Solana trading into a fast competitive arena using live market
 1. Open the arena and confirm it starts directly in the trading interface.
 2. Connect a Solana wallet, or continue in demo mode if no wallet is installed.
 3. Select BTC, ETH, SOL, JUP, or BONK.
-4. Place a long or short market trade with demo USDC.
-5. Switch to a limit or stop order and confirm it appears in the queued orders panel.
-6. Cancel a queued order.
-7. Watch open position PnL and leaderboard rank update.
-8. Close a position.
-9. Settle the current round and confirm recent trades plus ER settlement logs update.
-10. Refresh the page and confirm demo positions, activity, and settlement history persist.
+4. Toggle market filters, chart timeframe, and candle/line chart modes.
+5. Place a long or short market trade with demo USDC.
+6. Switch to a limit or stop order and confirm it appears in the queued orders panel.
+7. Cancel a queued order.
+8. Watch open position PnL and leaderboard rank update.
+9. Toggle the full leaderboard and My trades filter.
+10. Close a position.
+11. Settle the current round and confirm recent trades plus ER settlement logs update.
+12. Refresh the page and confirm demo positions, activity, and settlement history persist.
 
 ## MagicBlock Ephemeral Rollups Fit
 
@@ -44,10 +46,10 @@ The hackathon demo should be easy for judges to run without deposits, custody, o
 
 ## P1-P6 Coverage
 
-- P1 Playable arena: first-screen trading UI, active round, market selector, demo balance, responsive layout.
+- P1 Playable arena: first-screen trading UI, active round, market selector/filter, demo balance, responsive layout.
 - P2 Trading and risk: long, short, market, limit, stop, leverage, margin, fees, liquidation estimate, close, cancel.
-- P3 Market feed: public live prices with fallback simulator and candlestick-style chart.
-- P4 Competition: leaderboard, recent trades, rank, final settlement, round reset.
+- P3 Market feed: public live prices with fallback simulator, chart timeframe controls, candle and line modes.
+- P4 Competition: expandable leaderboard, filterable recent trades, rank, final settlement, round reset.
 - P5 Solana and MagicBlock: wallet identity, devnet RPC health, ER settlement log, MagicBlock-ready state model.
 - P6 Delivery: README, Chinese README, requirements, deployment guide, smoke check, Cloudflare Pages config.
 
@@ -59,10 +61,12 @@ Suggested length: 90 seconds.
 2. Connect wallet or show demo mode fallback.
 3. Place a long BTC demo trade and point out demo USDC, leverage, and liquidation estimate.
 4. Show the open position PnL and leaderboard update.
-5. Queue a limit or stop order, then cancel it from Queued Orders.
-6. Close the open position and show recent trades.
-7. Click Settle current round and show the ER Settlement Log.
-8. End on the README or submission pack explaining MagicBlock ER fit and demo-funds safety.
+5. Toggle candle/line mode and show the market rules panel.
+6. Queue a limit or stop order, then cancel it from Queued Orders.
+7. Toggle Full leaderboard and My trades.
+8. Close the open position and show recent trades.
+9. Click Settle current round and show the ER Settlement Log.
+10. End on the README or submission pack explaining MagicBlock ER fit and demo-funds safety.
 
 ## Final Submission Checklist
 

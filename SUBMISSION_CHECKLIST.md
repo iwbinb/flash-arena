@@ -14,6 +14,7 @@
 - [ ] Demo USDC balance is visible.
 - [ ] Long and short trades can be placed.
 - [ ] Limit and stop orders can be queued, viewed, triggered, and cancelled.
+- [ ] Market filters, chart timeframe, candle/line mode, leaderboard toggle, and trade filters respond.
 - [ ] Positions update PnL in real time.
 - [ ] Positions can be closed.
 - [ ] The current round can be settled and a new round can open.

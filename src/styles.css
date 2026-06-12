@@ -419,6 +419,36 @@ button {
   font-size: 11px;
 }
 
+.market-rules.open svg {
+  transform: rotate(180deg);
+}
+
+.market-rules-panel {
+  width: calc(100% - 12px);
+  margin: 0 6px 6px;
+  padding: 8px 10px;
+  border: 1px solid var(--border-soft);
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.14);
+}
+
+.market-rules-panel div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 22px;
+  color: var(--muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+}
+
+.market-rules-panel strong {
+  color: var(--text);
+  font-family: var(--mono);
+  text-align: right;
+}
+
 .settle-button {
   width: calc(100% - 12px);
   min-height: 34px;
@@ -622,6 +652,11 @@ button {
 .grid-line {
   stroke: rgba(140, 151, 168, 0.13);
   stroke-width: 1;
+}
+
+.line-area {
+  fill: rgba(34, 211, 238, 0.1);
+  stroke: none;
 }
 
 .candle-up {
@@ -1055,6 +1090,10 @@ input[type="range"] {
   gap: 8px;
   padding: 14px;
   text-align: center;
+}
+
+.table-empty {
+  border-bottom: 1px solid var(--border-soft);
 }
 
 .leaderboard {

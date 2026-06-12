@@ -43,13 +43,14 @@ Flash Arena 建议使用混合数据方案：
 - 多空仓位模拟器
 - Market / Limit / Stop 订单流程
 - 可见的条件单队列和取消操作
+- 可交互市场筛选、市场规则、图表周期、K 线 / 折线模式
 - 真实行情优先，失败时自动 fallback 模拟行情
 - 实时 PnL 计算
 - 限时交易回合
 - 手动和自动回合结算
 - 当前玩家高亮的竞技场排行榜
-- Recent trades 交易流
-- ER settlement log 和 RPC 健康状态展示
+- 可展开排行榜、可筛选 Recent trades 交易流和 ER settlement log
+- RPC 健康状态展示
 - 浏览器本地持久化：demo 持仓、订单、交易和结算历史刷新后可恢复
 - PWA metadata、favicon 和移动端主题色
 - Cloudflare Pages 部署准备

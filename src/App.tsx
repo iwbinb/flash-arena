@@ -6,7 +6,6 @@ import {
   CheckCircle2,
   ChevronDown,
   Clock3,
-  ExternalLink,
   Gauge,
   Info,
   Layers3,
@@ -740,15 +739,21 @@ function MarketList({
   activeMarketId: string;
   onSelect: (marketId: string) => void;
 }) {
+  const [marketFilter, setMarketFilter] = useState<"all" | "live" | "next">("all");
+  const [showRules, setShowRules] = useState(false);
+  const visibleMarkets = markets.filter((market) => marketFilter === "all" || market.status === marketFilter);
+  const nextFilter = marketFilter === "all" ? "live" : marketFilter === "live" ? "next" : "all";
+  const filterLabel = marketFilter === "all" ? "All" : marketFilter === "live" ? "Live" : "Next";
+
   return (
     <section className="panel market-list">
       <div className="panel-title">
         <span>Markets</span>
-        <button className="text-button">
-          All <ChevronDown size={14} />
+        <button className="text-button" onClick={() => setMarketFilter(nextFilter)}>
+          {filterLabel} <ChevronDown size={14} />
         </button>
       </div>
-      {markets.map((market) => (
+      {visibleMarkets.map((market) => (
         <button
           key={market.id}
           className={`market-row ${activeMarketId === market.id ? "selected" : ""}`}
@@ -767,9 +772,29 @@ function MarketList({
           <span className={`mini-badge ${market.status}`}>{market.status}</span>
         </button>
       ))}
-      <button className="market-rules">
-        Market info & rules <ExternalLink size={13} />
+      <button className={`market-rules ${showRules ? "open" : ""}`} onClick={() => setShowRules((value) => !value)}>
+        Market info & rules <ChevronDown size={13} />
       </button>
+      {showRules ? (
+        <div className="market-rules-panel">
+          <div>
+            <span>Venue</span>
+            <strong>Perp demo</strong>
+          </div>
+          <div>
+            <span>Capital</span>
+            <strong>Demo USDC</strong>
+          </div>
+          <div>
+            <span>Orders</span>
+            <strong>Market / limit / stop</strong>
+          </div>
+          <div>
+            <span>Fees</span>
+            <strong>0.012%</strong>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }
@@ -840,6 +865,8 @@ function Metric({ label, value, sub, tone }: { label: string; value: string; sub
 }
 
 function PriceChart({ market }: { market: Market }) {
+  const [timeframe, setTimeframe] = useState("15m");
+  const [chartMode, setChartMode] = useState<"candles" | "line">("candles");
   const candles = market.candles;
   const lows = candles.map((candle) => candle.low);
   const highs = candles.map((candle) => candle.high);
@@ -853,27 +880,28 @@ function PriceChart({ market }: { market: Market }) {
   const line = candles
     .map((candle, index) => `${(index / (candles.length - 1)) * width},${scaleY(candle.close)}`)
     .join(" ");
+  const area = `0,${height - pad} ${line} ${width},${height - pad}`;
 
   return (
     <section className="panel chart-panel">
       <div className="chart-toolbar">
         <div className="toolbar-tabs">
           {["1m", "5m", "15m", "1h", "4h", "1D"].map((tab) => (
-            <button key={tab} className={tab === "15m" ? "selected" : ""}>
+            <button key={tab} className={tab === timeframe ? "selected" : ""} onClick={() => setTimeframe(tab)}>
               {tab}
             </button>
           ))}
         </div>
         <div className="chart-mode">
-          <button className="selected">
+          <button className={chartMode === "candles" ? "selected" : ""} onClick={() => setChartMode("candles")}>
             <BarChart3 size={14} /> Candles
           </button>
-          <button>
+          <button className={chartMode === "line" ? "selected" : ""} onClick={() => setChartMode("line")}>
             <LineChart size={14} /> Line
           </button>
         </div>
         <div className="chart-price">
-          <span>{market.symbol} · 15 · Pyth-ready</span>
+          <span>{market.symbol} · {timeframe} · Pyth-ready</span>
           <strong className={market.price >= market.previousPrice ? "positive" : "negative"}>${formatPrice(market.price)}</strong>
           <small>{formatPercent(market.change24h)}</small>
         </div>
@@ -891,8 +919,9 @@ function PriceChart({ market }: { market: Market }) {
         {Array.from({ length: 9 }).map((_, index) => (
           <line key={`v-${index}`} x1={(width / 8) * index} x2={(width / 8) * index} y1="0" y2={height} className="grid-line" />
         ))}
-        <polyline points={line} fill="none" stroke="url(#lineGlow)" strokeWidth="2.1" />
-        {candles.map((candle, index) => {
+        {chartMode === "line" ? <polygon points={area} className="line-area" /> : null}
+        <polyline points={line} fill="none" stroke="url(#lineGlow)" strokeWidth={chartMode === "line" ? "2.8" : "2.1"} />
+        {chartMode === "candles" ? candles.map((candle, index) => {
           const x = (index / candles.length) * width + 2;
           const open = scaleY(candle.open);
           const close = scaleY(candle.close);
@@ -912,7 +941,7 @@ function PriceChart({ market }: { market: Market }) {
               />
             </g>
           );
-        })}
+        }) : null}
       </svg>
       <div className="chart-stats">
         <Stat label="24h Change" value={formatPercent(market.change24h)} tone={market.change24h >= 0 ? "positive" : "negative"} />
@@ -1164,13 +1193,16 @@ function PositionsPanel({ positions, markets, onClose }: { positions: Position[]
 }
 
 function Leaderboard({ items }: { items: Competitor[] }) {
+  const [showAll, setShowAll] = useState(false);
   const top = items.slice(0, 3);
+  const visibleItems = showAll ? items : items.slice(0, 7);
+
   return (
     <section className="panel leaderboard">
       <div className="panel-title">
         <span>Leaderboard</span>
-        <button className="text-button">
-          Full leaderboard <ExternalLink size={13} />
+        <button className="text-button" onClick={() => setShowAll((value) => !value)}>
+          {showAll ? "Top 7" : "Full leaderboard"}
         </button>
       </div>
       <div className="podium">
@@ -1195,7 +1227,7 @@ function Leaderboard({ items }: { items: Competitor[] }) {
           <span>PnL</span>
           <span>Open</span>
         </div>
-        {items.slice(0, 7).map((item, index) => (
+        {visibleItems.map((item, index) => (
           <div key={item.id} className={`table-row leader-grid ${item.id === "you" ? "you-row" : ""}`}>
             <span>{index + 1}</span>
             <strong>{item.name}</strong>
@@ -1210,13 +1242,16 @@ function Leaderboard({ items }: { items: Competitor[] }) {
 }
 
 function RecentTrades({ trades, markets }: { trades: TradeEvent[]; markets: Market[] }) {
+  const [filter, setFilter] = useState<"all" | "mine">("all");
+  const visibleTrades = filter === "mine" ? trades.filter((trade) => trade.trader === "You" || trade.trader.startsWith("You ")) : trades;
+
   return (
     <section className="panel recent-trades">
       <div className="panel-title">
         <span>Recent Trades</span>
         <div className="mini-toggle">
-          <button className="selected">All</button>
-          <button>My trades</button>
+          <button className={filter === "all" ? "selected" : ""} onClick={() => setFilter("all")}>All</button>
+          <button className={filter === "mine" ? "selected" : ""} onClick={() => setFilter("mine")}>My trades</button>
         </div>
       </div>
       <div className="table">
@@ -1228,7 +1263,12 @@ function RecentTrades({ trades, markets }: { trades: TradeEvent[]; markets: Mark
           <span>Size</span>
           <span>Price</span>
         </div>
-        {trades.slice(0, 8).map((trade) => {
+        {visibleTrades.length === 0 ? (
+          <div className="empty-state table-empty">
+            <LockKeyhole size={18} />
+            <span>No matching trades yet.</span>
+          </div>
+        ) : visibleTrades.slice(0, 8).map((trade) => {
           const market = markets.find((item) => item.id === trade.marketId);
           return (
             <div className="table-row trades-grid" key={trade.id}>
@@ -1247,11 +1287,14 @@ function RecentTrades({ trades, markets }: { trades: TradeEvent[]; markets: Mark
 }
 
 function ErLog({ events }: { events: ErEvent[] }) {
+  const [showAll, setShowAll] = useState(false);
+  const visibleEvents = showAll ? events : events.slice(0, 5);
+
   return (
     <section className="panel er-log">
       <div className="panel-title">
         <span>ER Settlement Log</span>
-        <button className="text-button">View all</button>
+        <button className="text-button" onClick={() => setShowAll((value) => !value)}>{showAll ? "Latest" : "View all"}</button>
       </div>
       <div className="table">
         <div className="table-head er-grid">
@@ -1260,7 +1303,7 @@ function ErLog({ events }: { events: ErEvent[] }) {
           <span>Details</span>
           <span>Status</span>
         </div>
-        {events.slice(0, 8).map((event) => (
+        {visibleEvents.map((event) => (
           <div className="table-row er-grid" key={event.id}>
             <span>{formatTime(event.time)}</span>
             <strong>{event.event}</strong>

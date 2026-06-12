@@ -43,13 +43,14 @@ This keeps the product credible for a trading hackathon while keeping implementa
 - Long and short position simulator
 - Market, limit, and stop order flows
 - Visible conditional order queue with cancel actions
+- Interactive market filters, market rules, chart timeframe, and candle/line modes
 - Live market feed with fallback simulator
 - Real-time PnL calculation
 - Timed trading rounds
 - Manual and automatic round settlement
 - Arena leaderboard with the current player highlighted
-- Recent trades stream
-- ER settlement log and RPC health surface
+- Expandable leaderboard, filterable recent trades stream, and ER settlement log
+- RPC health surface
 - Local browser persistence for demo positions, orders, trades, and settlement history
 - PWA metadata, favicon, and mobile theme color
 - Cloudflare Pages-ready deployment setup
