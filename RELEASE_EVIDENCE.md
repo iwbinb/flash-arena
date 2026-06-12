@@ -4,6 +4,8 @@ This file gives judges and reviewers a single place to verify what is ready for 
 
 Cloudflare Pages URL: https://flash-arena.pages.dev
 
+Demo video URL: https://flash-arena.pages.dev/flash-arena-demo.mp4
+
 ## Product Scope
 
 Flash Arena is a playable Solana trading arena with demo USDC, live-or-fallback market prices, long and short position flows, competition rounds, leaderboard updates, and a MagicBlock Ephemeral Rollups settlement story.
@@ -72,5 +74,6 @@ The project is ready for final submission when:
 - GitHub Actions `Verify` passes on `main`.
 - Cloudflare Pages serves the built app.
 - `npm run live-check -- <live-demo-url>` passes.
+- The demo video is available at `/flash-arena-demo.mp4`.
 
 Current status: the live Cloudflare Pages deployment is available at https://flash-arena.pages.dev and the live deployment check passes.

@@ -49,6 +49,7 @@ const requiredFiles = [
   "public/manifest.webmanifest",
   "public/_headers",
   "public/favicon.svg",
+  "public/flash-arena-demo.mp4",
   ".env.example"
 ];
 
@@ -90,21 +91,29 @@ requireIncludes("SUBMISSION.md", [
   "MagicBlock Ephemeral Rollups Fit",
   "Demo Video Script",
   "Final Submission Checklist",
-  "https://flash-arena.pages.dev"
+  "https://flash-arena.pages.dev",
+  "https://flash-arena.pages.dev/flash-arena-demo.mp4"
 ]);
 
 requireIncludes("SUBMISSION_CHECKLIST.md", [
   "Cloudflare Pages deployment is live",
+  "https://flash-arena.pages.dev",
+  "https://flash-arena.pages.dev/flash-arena-demo.mp4",
   "GitHub Actions `Verify` workflow passes",
   "Submission readiness panel reflects core demo status",
   "npm run product-check"
 ]);
+
+if (read("SUBMISSION_CHECKLIST.md").includes("- [ ]")) {
+  fail("SUBMISSION_CHECKLIST.md still contains unchecked items");
+}
 
 requireIncludes("RELEASE_EVIDENCE.md", [
   "P1-P6 Evidence Matrix",
   "Judge Flow",
   "Verification Commands",
   "https://flash-arena.pages.dev",
+  "https://flash-arena.pages.dev/flash-arena-demo.mp4",
   "npm run live-check -- https://your-project.pages.dev",
   "Cloudflare Pages URL"
 ]);

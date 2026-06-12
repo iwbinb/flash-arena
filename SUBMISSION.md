@@ -8,6 +8,7 @@ Flash Arena is a real-time demo trading arena for Solana Blitz v5. Players enter
 
 - Repository: https://github.com/iwbinb/flash-arena
 - Live demo: https://flash-arena.pages.dev
+- Demo video: https://flash-arena.pages.dev/flash-arena-demo.mp4
 - Build command: `npm run build`
 - Smoke check: `npm run smoke`
 - Submission artifact audit: `npm run audit`
@@ -93,5 +94,5 @@ Suggested length: 90 seconds.
 - `npm run live-check -- <live-demo-url>` passes after deployment.
 - GitHub Actions `Verify` workflow passes.
 - Desktop and mobile layouts are visually checked.
-- Demo video is recorded and linked.
+- Demo video is recorded and linked: https://flash-arena.pages.dev/flash-arena-demo.mp4
 - No real funds, private keys, local machine paths, or private notes are included.

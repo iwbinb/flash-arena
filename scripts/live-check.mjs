@@ -100,6 +100,7 @@ export const runLiveCheck = async (rawUrl, fetchImpl = fetch) => {
   }
 
   await checkOk(fetchImpl, `${baseUrl}/favicon.svg`, "Favicon");
+  await checkOk(fetchImpl, `${baseUrl}/flash-arena-demo.mp4`, "Demo video");
 
   const headers = htmlResponse.headers;
   const csp = headers.get("content-security-policy");

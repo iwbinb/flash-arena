@@ -6,6 +6,8 @@ Solana 上的实时交易竞技场。
 
 在线 demo：https://flash-arena.pages.dev
 
+演示视频：https://flash-arena.pages.dev/flash-arena-demo.mp4
+
 Flash Arena 是为 Solana Blitz v5 设计的交易竞赛应用。玩家进入限时交易回合，使用模拟资金开多或开空，并根据实时 PnL 排行。项目目标是用 MagicBlock Ephemeral Rollups 展示低延迟、接近实时的链上交易体验，同时避免真实资金交易带来的风险和复杂度。
 
 ## 项目概念
