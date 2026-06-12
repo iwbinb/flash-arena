@@ -40,6 +40,7 @@ What to build:
 - Market, limit, and stop order types.
 - Margin input, quick sizing, and leverage control.
 - Estimated position size, fees, and liquidation price.
+- Account-level risk summary with margin usage, queued margin, gross exposure, and closest liquidation gap.
 - Position close flow with realized PnL.
 - Visible queued conditional orders with cancel actions.
 

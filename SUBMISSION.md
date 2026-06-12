@@ -54,7 +54,7 @@ The hackathon demo should be easy for judges to run without deposits, custody, o
 ## P1-P6 Coverage
 
 - P1 Playable arena: first-screen trading UI, active round, market selector/filter, demo balance, responsive layout.
-- P2 Trading and risk: long, short, market, limit, stop, leverage, margin, fees, liquidation estimate, close, cancel.
+- P2 Trading and risk: long, short, market, limit, stop, leverage, margin, fees, liquidation estimate, account risk summary, close, cancel.
 - P3 Market feed: public live prices with fallback simulator, chart timeframe controls, candle and line modes.
 - P4 Competition: expandable leaderboard, filterable recent trades, rank, final settlement, round reset, exportable round evidence.
 - P5 Solana and MagicBlock: wallet identity, devnet RPC health, ER settlement log, MagicBlock-ready state model.

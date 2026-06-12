@@ -50,6 +50,7 @@ const checks = [
       ["market, limit, and stop orders exist", includes(source.types, 'export type OrderType = "market" | "limit" | "stop"') && includes(source.app, '(["market", "limit", "stop"] as const)')],
       ["margin and leverage controls exist", includes(source.app, "Amount (Demo USDC)") && includes(source.app, 'type="range"') && includes(source.app, 'max="50"')],
       ["position size, fees, and liquidation estimate exist", includes(source.app, "Position size") && includes(source.app, "Est. fees") && includes(source.sim, "calculateLiquidationEstimate")],
+      ["account-level risk summary exists", includes(source.app, "Account Risk") && includes(source.app, "Margin used") && includes(source.app, "Closest liq. gap") && includes(source.styles, ".account-risk")],
       ["insufficient demo balance is rejected", includes(source.app, "Insufficient demo USDC") && includes(source.app, "selectedMargin > availableBalance")],
       ["conditional orders can be queued and cancelled", includes(source.app, "Conditional Order Queued") && includes(source.app, "cancelPendingOrder") && includes(source.app, "PendingOrdersList")],
       ["conditional orders can trigger from price updates", includes(source.app, "triggered.push(order)") && includes(source.app, 'openPosition(order.side, order.margin, order.leverage, order.marketId, "triggered")')],

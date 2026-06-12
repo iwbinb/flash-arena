@@ -651,6 +651,7 @@ function App() {
             onTriggerPriceChange={setTriggerPrice}
             availableBalance={availableBalance}
             canTrade={canTrade}
+            positions={positions}
             pendingOrders={pendingOrders}
             onCancelOrder={cancelPendingOrder}
             onPlaceOrder={placeOrder}
@@ -1080,6 +1081,7 @@ function TradeTicket({
   onTriggerPriceChange,
   availableBalance,
   canTrade,
+  positions,
   pendingOrders,
   onCancelOrder,
   onPlaceOrder
@@ -1100,12 +1102,14 @@ function TradeTicket({
   onTriggerPriceChange: (value: number) => void;
   availableBalance: number;
   canTrade: boolean;
+  positions: Position[];
   pendingOrders: PendingOrder[];
   onCancelOrder: (order: PendingOrder) => void;
   onPlaceOrder: () => void;
 }) {
   const size = margin * leverage;
   const liquidation = calculateLiquidationEstimate(side, activeMarket.price, leverage);
+  const accountRisk = getAccountRisk(positions, pendingOrders, markets);
 
   return (
     <section className="panel trade-ticket">
@@ -1186,6 +1190,7 @@ function TradeTicket({
         <InfoLine label="Liq. price (est.)" value={formatPrice(liquidation)} />
         <InfoLine label="Est. fees" value={`${formatCurrency(size * 0.00012)} USDC`} />
       </div>
+      <AccountRiskPanel risk={accountRisk} availableBalance={availableBalance} />
       <button className={`place-button ${side}`} disabled={!canTrade || margin <= 0 || margin > availableBalance} onClick={onPlaceOrder}>
         {orderType === "market" ? `${side} ${formatCurrency(margin, 0)} USDC` : `Queue ${orderType} ${side}`}
         <small>{leverage}x on {activeMarket.symbol}</small>
@@ -1196,6 +1201,67 @@ function TradeTicket({
       </div>
       <PendingOrdersList orders={pendingOrders} markets={markets} onCancel={onCancelOrder} />
     </section>
+  );
+}
+
+function getAccountRisk(positions: Position[], pendingOrders: PendingOrder[], markets: Market[]) {
+  const openMargin = positions.reduce((total, position) => total + position.margin, 0);
+  const queuedMargin = pendingOrders.reduce((total, order) => total + order.margin, 0);
+  const grossExposure =
+    positions.reduce((total, position) => total + position.size, 0) +
+    pendingOrders.reduce((total, order) => total + order.margin * order.leverage, 0);
+  const reservedMargin = openMargin + queuedMargin;
+  const marginUsage = (reservedMargin / DEMO_STARTING_BALANCE) * 100;
+  const closestLiquidationDistance = positions.reduce<number | null>((closest, position) => {
+    const market = markets.find((item) => item.id === position.marketId);
+    if (!market) return closest;
+    const liquidation = calculateLiquidationEstimate(position.side, position.entryPrice, position.leverage);
+    const distance = Math.abs((market.price - liquidation) / market.price) * 100;
+    return closest === null ? distance : Math.min(closest, distance);
+  }, null);
+  const tier = marginUsage >= 75 || (closestLiquidationDistance !== null && closestLiquidationDistance < 6)
+    ? "High"
+    : marginUsage >= 40 || (closestLiquidationDistance !== null && closestLiquidationDistance < 12)
+      ? "Elevated"
+      : "Stable";
+
+  return {
+    tier,
+    openMargin,
+    queuedMargin,
+    grossExposure,
+    marginUsage,
+    closestLiquidationDistance
+  };
+}
+
+function AccountRiskPanel({
+  risk,
+  availableBalance
+}: {
+  risk: ReturnType<typeof getAccountRisk>;
+  availableBalance: number;
+}) {
+  const closestDistance = risk.closestLiquidationDistance === null ? "n/a" : `${risk.closestLiquidationDistance.toFixed(2)}%`;
+
+  return (
+    <div className={`account-risk ${risk.tier.toLowerCase()}`}>
+      <div className="account-risk-head">
+        <span>Account Risk</span>
+        <strong>{risk.tier}</strong>
+      </div>
+      <div className="risk-meter" aria-label={`Margin usage ${risk.marginUsage.toFixed(1)} percent`}>
+        <i style={{ width: `${Math.min(100, risk.marginUsage)}%` }} />
+      </div>
+      <div className="risk-grid">
+        <InfoLine label="Margin used" value={`${risk.marginUsage.toFixed(1)}%`} />
+        <InfoLine label="Open margin" value={`${formatCurrency(risk.openMargin, 0)} USDC`} />
+        <InfoLine label="Queued margin" value={`${formatCurrency(risk.queuedMargin, 0)} USDC`} />
+        <InfoLine label="Gross exposure" value={`${formatCurrency(risk.grossExposure, 0)} USDC`} />
+        <InfoLine label="Closest liq. gap" value={closestDistance} />
+        <InfoLine label="Free balance" value={`${formatCurrency(Math.max(0, availableBalance), 0)} USDC`} />
+      </div>
+    </div>
   );
 }
 

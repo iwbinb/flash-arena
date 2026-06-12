@@ -46,6 +46,7 @@ This keeps the product credible for a trading hackathon while keeping implementa
 - Long and short position simulator
 - Market, limit, and stop order flows
 - Visible conditional order queue with cancel actions
+- Account risk summary for margin usage, queued margin, gross exposure, and closest liquidation gap
 - Interactive market filters, market rules, chart timeframe, and candle/line modes
 - Live market feed with fallback simulator
 - Real-time PnL calculation
