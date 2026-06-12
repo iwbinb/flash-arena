@@ -120,8 +120,11 @@ npm run audit
 Live deployment check:
 
 ```bash
+npm run live-check:selftest
 npm run live-check -- https://your-project.pages.dev
 ```
+
+This validates the hosted app shell, compiled assets, core arena UI, P1-P6 Coverage, ER evidence UI, PWA metadata, favicon, and security headers.
 
 GitHub verification:
 

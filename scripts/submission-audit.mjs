@@ -22,7 +22,7 @@ const requireIncludes = (file, checks) => {
 };
 
 const packageJson = JSON.parse(read("package.json"));
-const requiredScripts = ["check", "build", "smoke", "audit", "product-check", "privacy", "verify", "live-check", "deploy"];
+const requiredScripts = ["check", "build", "smoke", "audit", "product-check", "privacy", "verify", "live-check", "live-check:selftest", "deploy"];
 for (const script of requiredScripts) {
   if (!packageJson.scripts?.[script]) {
     fail(`package.json is missing script: ${script}`);
@@ -40,6 +40,7 @@ const requiredFiles = [
   "wrangler.toml",
   ".github/workflows/verify.yml",
   "scripts/live-check.mjs",
+  "scripts/live-check-selftest.mjs",
   "scripts/smoke-check.mjs",
   "scripts/privacy-check.mjs",
   "scripts/product-check.mjs",

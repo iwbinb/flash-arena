@@ -23,6 +23,7 @@ const source = {
   submission: read("SUBMISSION.md"),
   checklist: read("SUBMISSION_CHECKLIST.md"),
   deployment: read("DEPLOYMENT.md"),
+  liveCheck: read("scripts/live-check.mjs"),
   headers: read("public/_headers"),
   manifest: JSON.parse(read("public/manifest.webmanifest"))
 };
@@ -102,14 +103,15 @@ const checks = [
   {
     group: "P6 delivery, QA, and submission",
     evidence: [
-      ["required npm scripts exist", ["check", "build", "smoke", "audit", "privacy", "product-check", "verify", "live-check", "deploy"].every((script) => Boolean(source.packageJson.scripts?.[script]))],
-      ["verify includes product-check", includes(source.packageJson.scripts.verify ?? "", "npm run product-check")],
+      ["required npm scripts exist", ["check", "build", "smoke", "audit", "privacy", "product-check", "verify", "live-check", "live-check:selftest", "deploy"].every((script) => Boolean(source.packageJson.scripts?.[script]))],
+      ["verify includes live-check self-test and product-check", includes(source.packageJson.scripts.verify ?? "", "npm run live-check:selftest") && includes(source.packageJson.scripts.verify ?? "", "npm run product-check")],
       ["English and Chinese docs exist", existsSync("README.md") && existsSync("README.zh-CN.md") && existsSync("REQUIREMENTS.zh-CN.md")],
       ["submission pack and checklist exist", includes(source.submission, "Demo Video Script") && includes(source.checklist, "# Submission Checklist") && includes(source.checklist, "Hackathon Materials")],
       ["Cloudflare Pages config exists", existsSync("wrangler.toml") && includes(source.deployment, "Cloudflare Pages")],
       ["PWA metadata exists", source.manifest.name === "Flash Arena" && source.manifest.start_url === "/" && source.manifest.display === "standalone"],
       ["security headers exist", ["Content-Security-Policy", "X-Frame-Options", "X-Content-Type-Options", "Permissions-Policy"].every((header) => includes(source.headers, header))],
       ["live deployment check exists", existsSync("scripts/live-check.mjs") && includes(source.deployment, "npm run live-check")],
+      ["live deployment check validates compiled app assets", includes(source.deployment, "compiled app bundle") && includes(source.liveCheck, "requiredBundleCopy") && includes(source.liveCheck, ".coverage-scorecard")],
       ["P1-P6 coverage scorecard exists", includes(source.app, "P1-P6 Coverage") && ["P1", "P2", "P3", "P4", "P5", "P6"].every((code) => includes(source.app, `code: "${code}"`)) && includes(source.styles, ".coverage-scorecard")],
       ["one-click judge demo staging exists", includes(source.app, "runJudgeDemo") && includes(source.app, "Demo flow staged") && includes(source.app, "onRunDemo") && includes(source.styles, ".readiness-actions")],
       ["interactive state semantics exist", includes(source.app, "aria-pressed") && includes(source.app, "aria-selected") && includes(source.app, "aria-expanded")],

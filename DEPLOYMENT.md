@@ -26,6 +26,12 @@ npm run deploy
 
 ## Post-Deploy Check
 
+Before deployment, run the local production gate:
+
+```bash
+npm run live-check:selftest
+```
+
 After Cloudflare Pages returns a public URL, verify the live deployment:
 
 ```bash
@@ -36,6 +42,8 @@ The live check confirms:
 
 - The app shell is reachable.
 - Compiled JavaScript and CSS assets are referenced.
+- The compiled app bundle includes the core arena, Demo, P1-P6 Coverage, ER, and submission evidence UI.
+- The compiled CSS includes the desktop, mobile, Judge Flow, P1-P6 Coverage, and ER pipeline selectors.
 - PWA manifest and favicon load.
 - Security headers are present.
 

@@ -120,8 +120,11 @@ npm run audit
 线上部署检查：
 
 ```bash
+npm run live-check:selftest
 npm run live-check -- https://your-project.pages.dev
 ```
+
+这个检查会验证线上 app shell、编译资产、核心竞技场 UI、P1-P6 Coverage、ER 证据 UI、PWA metadata、favicon 和安全响应头。
 
 GitHub 验证：
 
