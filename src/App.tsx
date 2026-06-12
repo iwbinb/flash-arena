@@ -119,6 +119,8 @@ function App() {
   const [erLatency, setErLatency] = useState<number | null>(18);
   const tickRef = useRef(0);
   const lastLiveAt = useRef(0);
+  const settlementInFlight = useRef(false);
+  const nextRoundTimeout = useRef<number | null>(null);
 
   const activeMarket = markets.find((market) => market.id === activeMarketId) ?? markets[0];
   const usedMargin = positions.reduce((total, position) => total + position.margin, 0);
@@ -149,7 +151,7 @@ function App() {
   useEffect(() => {
     const interval = window.setInterval(() => {
       setRoundSeconds((seconds) => {
-        if (seconds <= 0) return roundLengthSeconds;
+        if (seconds <= 0) return 0;
         return seconds - 1;
       });
     }, 1000);
@@ -268,6 +270,21 @@ function App() {
     triggered.forEach((order) => openPosition(order.side, order.margin, order.leverage, order.marketId, "triggered"));
   }, [markets]);
 
+  useEffect(() => {
+    if (roundSeconds === 0 && !settlementInFlight.current) {
+      settleRound("auto");
+    }
+  }, [roundSeconds]);
+
+  useEffect(
+    () => () => {
+      if (nextRoundTimeout.current) {
+        window.clearTimeout(nextRoundTimeout.current);
+      }
+    },
+    []
+  );
+
   const pushToast = (message: string) => {
     setToast(message);
     window.setTimeout(() => setToast(null), 2800);
@@ -340,13 +357,15 @@ function App() {
       },
       ...current.slice(0, 9)
     ]);
-    setErEvents((current) => [
-      makeErEvent(type === "triggered" ? "Order Triggered" : "Trade Accepted", `${selectedSide.toUpperCase()} ${market.symbol}`, "pending"),
-      ...current.slice(0, 7)
-    ]);
+    const erEvent = makeErEvent(
+      type === "triggered" ? "Order Triggered" : "Trade Accepted",
+      `${selectedSide.toUpperCase()} ${market.symbol}`,
+      "pending"
+    );
+    setErEvents((current) => [erEvent, ...current.slice(0, 7)]);
     window.setTimeout(() => {
       setErEvents((current) =>
-        current.map((event, index) => (index === 0 && event.status === "pending" ? { ...event, status: "synced" } : event))
+        current.map((event) => (event.id === erEvent.id && event.status === "pending" ? { ...event, status: "synced" } : event))
       );
     }, 1200);
   };
@@ -400,10 +419,87 @@ function App() {
       },
       ...current.slice(0, 9)
     ]);
-    setErEvents((current) => [makeErEvent("Trade Settled", `PnL ${formatSigned(pnl)}`, "pending"), ...current.slice(0, 7)]);
+    const erEvent = makeErEvent("Trade Settled", `PnL ${formatSigned(pnl)}`, "pending");
+    setErEvents((current) => [erEvent, ...current.slice(0, 7)]);
+    window.setTimeout(() => {
+      setErEvents((current) =>
+        current.map((event) => (event.id === erEvent.id && event.status === "pending" ? { ...event, status: "synced" } : event))
+      );
+    }, 1200);
+  };
+
+  const cancelPendingOrder = (order: PendingOrder) => {
+    setPendingOrders((current) => current.filter((item) => item.id !== order.id));
+    setErEvents((current) => [
+      makeErEvent("Conditional Order Cancelled", `${order.orderType.toUpperCase()} ${order.side.toUpperCase()} ${order.marketId}`, "synced"),
+      ...current.slice(0, 7)
+    ]);
+    pushToast("Conditional order cancelled.");
+  };
+
+  const scheduleNextRound = () => {
+    if (nextRoundTimeout.current) {
+      window.clearTimeout(nextRoundTimeout.current);
+    }
+
+    nextRoundTimeout.current = window.setTimeout(() => {
+      setRoundSeconds(roundLengthSeconds);
+      settlementInFlight.current = false;
+      setErEvents((current) => [makeErEvent("New Round Opened", "Fresh demo arena state ready", "synced"), ...current.slice(0, 7)]);
+      pushToast("New demo round is live.");
+    }, 2600);
+  };
+
+  const settleRound = (mode: "manual" | "auto") => {
+    if (settlementInFlight.current) return;
+    settlementInFlight.current = true;
+
+    const now = Date.now();
+    let totalPnl = 0;
+    const closingTrades: TradeEvent[] = [];
+
+    positions.forEach((position) => {
+      const market = markets.find((item) => item.id === position.marketId);
+      if (!market) return;
+      const pnl = calculatePositionPnl(position, market.price);
+      totalPnl += pnl;
+      closingTrades.push({
+        id: randomId("trade"),
+        time: now,
+        trader: wallet.status === "connected" ? shortAddress(wallet.address) : "You",
+        side: position.side,
+        marketId: position.marketId,
+        size: position.size,
+        price: market.price,
+        pnl,
+        type: "close"
+      });
+    });
+
+    if (closingTrades.length) {
+      setRealizedPnl((value) => value + totalPnl);
+      setRecentTrades((current) => [...closingTrades, ...current].slice(0, 10));
+    }
+
+    setPositions([]);
+    setPendingOrders([]);
+    setRoundSeconds(0);
+    setErEvents((current) => [
+      makeErEvent(mode === "manual" ? "Round Settled Manually" : "Round Settled", `Final PnL ${formatSigned(totalPnl)}`, "synced"),
+      makeErEvent("Leaderboard Snapshot", `Rank #${userRank} captured`, "synced"),
+      ...(pendingOrders.length ? [makeErEvent("Open Orders Cancelled", `${pendingOrders.length} queued orders cleared`, "synced")] : []),
+      ...current.slice(0, 5)
+    ]);
+    pushToast("Round settled. Final demo PnL recorded.");
+    scheduleNextRound();
   };
 
   const resetRound = () => {
+    if (nextRoundTimeout.current) {
+      window.clearTimeout(nextRoundTimeout.current);
+      nextRoundTimeout.current = null;
+    }
+    settlementInFlight.current = false;
     setRoundSeconds(roundLengthSeconds);
     setPositions(initialPositions);
     setPendingOrders([]);
@@ -426,7 +522,7 @@ function App() {
 
       <section className="dashboard-grid">
         <aside className="left-rail">
-          <ArenaRooms roundSeconds={roundSeconds} onReset={resetRound} />
+          <ArenaRooms roundSeconds={roundSeconds} onReset={resetRound} onSettle={() => settleRound("manual")} />
           <MarketList markets={markets} activeMarketId={activeMarketId} onSelect={setActiveMarketId} />
         </aside>
 
@@ -469,6 +565,8 @@ function App() {
             onTriggerPriceChange={setTriggerPrice}
             availableBalance={availableBalance}
             canTrade={canTrade}
+            pendingOrders={pendingOrders}
+            onCancelOrder={cancelPendingOrder}
             onPlaceOrder={placeOrder}
           />
         </aside>
@@ -531,14 +629,15 @@ function TopBar({
         <span>Round ends in</span>
         <strong>{formatCountdown(roundSeconds)}</strong>
       </div>
-      <StatusItem icon={<RadioTower size={16} />} label="Price source" value={feedProvider} status={feedStatus} />
+      <StatusItem className="price-source" icon={<RadioTower size={16} />} label="Price source" value={feedProvider} status={feedStatus} />
       <StatusItem
+        className="er-latency"
         icon={<Gauge size={16} />}
         label="ER latency"
         value={erLatency === null ? "Delayed" : `${erLatency} ms`}
         status={erLatency === null ? "stale" : "live"}
       />
-      <StatusItem icon={<Layers3 size={16} />} label="MagicBlock ER" value="Ephemeral Rollup" status="live" />
+      <StatusItem className="magicblock-status" icon={<Layers3 size={16} />} label="MagicBlock ER" value="Ephemeral Rollup" status="live" />
       <button
         className={`wallet-button ${wallet.status === "connected" ? "connected" : ""}`}
         onClick={wallet.status === "connected" ? onDisconnect : onConnect}
@@ -551,9 +650,21 @@ function TopBar({
   );
 }
 
-function StatusItem({ icon, label, value, status }: { icon: ReactNode; label: string; value: string; status: FeedStatus | "live" | "stale" }) {
+function StatusItem({
+  icon,
+  label,
+  value,
+  status,
+  className = ""
+}: {
+  icon: ReactNode;
+  label: string;
+  value: string;
+  status: FeedStatus | "live" | "stale";
+  className?: string;
+}) {
   return (
-    <div className="status-item">
+    <div className={`status-item ${className}`}>
       <span className="status-icon">{icon}</span>
       <span>
         <small>{label}</small>
@@ -564,7 +675,7 @@ function StatusItem({ icon, label, value, status }: { icon: ReactNode; label: st
   );
 }
 
-function ArenaRooms({ roundSeconds, onReset }: { roundSeconds: number; onReset: () => void }) {
+function ArenaRooms({ roundSeconds, onReset, onSettle }: { roundSeconds: number; onReset: () => void; onSettle: () => void }) {
   return (
     <section className="panel arena-rooms">
       <div className="panel-title">
@@ -576,6 +687,10 @@ function ArenaRooms({ roundSeconds, onReset }: { roundSeconds: number; onReset: 
       <RoomRow title="Round 12" meta="Started 14:12:30" status="Live" time={formatCountdown(roundSeconds)} active />
       <RoomRow title="Round 11" meta="Settling in 01:17" status="Settling" />
       <RoomRow title="Round 13" meta="Starts in 10:42" status="Next" />
+      <button className="settle-button" onClick={onSettle}>
+        <Trophy size={14} />
+        Settle current round
+      </button>
     </section>
   );
 }
@@ -810,6 +925,8 @@ function TradeTicket({
   onTriggerPriceChange,
   availableBalance,
   canTrade,
+  pendingOrders,
+  onCancelOrder,
   onPlaceOrder
 }: {
   activeMarket: Market;
@@ -828,6 +945,8 @@ function TradeTicket({
   onTriggerPriceChange: (value: number) => void;
   availableBalance: number;
   canTrade: boolean;
+  pendingOrders: PendingOrder[];
+  onCancelOrder: (order: PendingOrder) => void;
   onPlaceOrder: () => void;
 }) {
   const size = margin * leverage;
@@ -920,7 +1039,47 @@ function TradeTicket({
         <ShieldCheck size={16} />
         <span>No real funds required. All balances are simulated for this arena round.</span>
       </div>
+      <PendingOrdersList orders={pendingOrders} markets={markets} onCancel={onCancelOrder} />
     </section>
+  );
+}
+
+function PendingOrdersList({
+  orders,
+  markets,
+  onCancel
+}: {
+  orders: PendingOrder[];
+  markets: Market[];
+  onCancel: (order: PendingOrder) => void;
+}) {
+  return (
+    <div className="pending-orders">
+      <div className="pending-orders-title">
+        <span>Queued Orders</span>
+        <strong>{orders.length}</strong>
+      </div>
+      {orders.length === 0 ? (
+        <p>No conditional orders queued.</p>
+      ) : (
+        orders.slice(0, 4).map((order) => {
+          const market = markets.find((item) => item.id === order.marketId);
+          return (
+            <div className="pending-order-row" key={order.id}>
+              <div>
+                <strong>
+                  {order.orderType} {order.side}
+                </strong>
+                <span>
+                  {market?.symbol ?? order.marketId} @ {formatPrice(order.triggerPrice)} · {order.leverage}x · {formatCurrency(order.margin, 0)}
+                </span>
+              </div>
+              <button onClick={() => onCancel(order)}>Cancel</button>
+            </div>
+          );
+        })
+      )}
+    </div>
   );
 }
 

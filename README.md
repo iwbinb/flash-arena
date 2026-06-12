@@ -42,9 +42,11 @@ This keeps the product credible for a trading hackathon while keeping implementa
 - Demo USDC balance per player
 - Long and short position simulator
 - Market, limit, and stop order flows
+- Visible conditional order queue with cancel actions
 - Live market feed with fallback simulator
 - Real-time PnL calculation
 - Timed trading rounds
+- Manual and automatic round settlement
 - Arena leaderboard with the current player highlighted
 - Recent trades stream
 - ER settlement log and RPC health surface
@@ -78,6 +80,12 @@ Build check:
 
 ```bash
 npm run build
+```
+
+Production smoke check:
+
+```bash
+npm run smoke
 ```
 
 Deploy to Cloudflare Pages:
@@ -120,6 +128,7 @@ A strong submission should include:
 - Live demo link
 - Short demo video
 - Clear README
+- Public P1-P6 requirements and acceptance gates
 - Explanation of how MagicBlock Ephemeral Rollups are used
 - Explanation of why demo balances are used instead of real funds
 

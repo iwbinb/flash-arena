@@ -42,9 +42,11 @@ Flash Arena 建议使用混合数据方案：
 - 每个玩家的模拟 USDC 余额
 - 多空仓位模拟器
 - Market / Limit / Stop 订单流程
+- 可见的条件单队列和取消操作
 - 真实行情优先，失败时自动 fallback 模拟行情
 - 实时 PnL 计算
 - 限时交易回合
+- 手动和自动回合结算
 - 当前玩家高亮的竞技场排行榜
 - Recent trades 交易流
 - ER settlement log 和 RPC 健康状态展示
@@ -78,6 +80,12 @@ npm run dev
 
 ```bash
 npm run build
+```
+
+生产构建 smoke check：
+
+```bash
+npm run smoke
 ```
 
 部署到 Cloudflare Pages：
@@ -120,6 +128,7 @@ Flash Arena 初始版本不应要求用户使用真实资金。
 - 在线 demo 链接
 - 简短演示视频
 - 清晰的 README
+- 公开的 P1-P6 需求和验收门槛
 - MagicBlock Ephemeral Rollups 的使用说明
 - 为什么使用模拟余额而不使用真实资金的说明
 

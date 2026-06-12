@@ -13,8 +13,10 @@
 - [ ] Live or fallback prices update the active market.
 - [ ] Demo USDC balance is visible.
 - [ ] Long and short trades can be placed.
+- [ ] Limit and stop orders can be queued, viewed, triggered, and cancelled.
 - [ ] Positions update PnL in real time.
 - [ ] Positions can be closed.
+- [ ] The current round can be settled and a new round can open.
 - [ ] Leaderboard updates after user trades.
 - [ ] Recent trades update after open and close actions.
 - [ ] ER settlement log updates after arena actions.
@@ -31,6 +33,8 @@
 
 - [ ] Public GitHub repository is available.
 - [ ] README explains the product and data strategy.
+- [ ] Public P1-P6 requirements are included.
 - [ ] Deployment instructions are included.
+- [ ] `npm run check`, `npm run build`, and `npm run smoke` pass.
 - [ ] Demo video shows wallet, round, trade, PnL, leaderboard, and ER log.
 - [ ] Submission explains how MagicBlock Ephemeral Rollups fit the arena state layer.

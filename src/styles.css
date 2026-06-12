@@ -68,6 +68,10 @@ button {
   margin-bottom: 10px;
 }
 
+.top-bar > * {
+  min-width: 0;
+}
+
 .brand,
 .round-pill,
 .countdown-box,
@@ -399,6 +403,24 @@ button {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-size: 11px;
+}
+
+.settle-button {
+  width: calc(100% - 12px);
+  min-height: 34px;
+  margin: 0 6px 6px;
+  border: 1px solid rgba(246, 196, 83, 0.32);
+  border-radius: 6px;
+  background: rgba(246, 196, 83, 0.08);
+  color: #ffe2a1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+  cursor: pointer;
 }
 
 .round-stage {
@@ -834,6 +856,83 @@ input[type="range"] {
   line-height: 1.35;
 }
 
+.pending-orders {
+  margin: 8px 12px 0;
+  border: 1px solid var(--border-soft);
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.13);
+  overflow: hidden;
+}
+
+.pending-orders-title {
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 10px;
+}
+
+.pending-orders-title strong {
+  color: var(--text);
+  font-family: var(--mono);
+}
+
+.pending-orders p {
+  margin: 0;
+  padding: 10px;
+  color: var(--weak);
+  font-size: 11px;
+}
+
+.pending-order-row {
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 68px;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.pending-order-row:last-child {
+  border-bottom: 0;
+}
+
+.pending-order-row strong {
+  display: block;
+  color: var(--text);
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.pending-order-row span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pending-order-row button {
+  min-height: 28px;
+  border: 1px solid rgba(255, 92, 122, 0.38);
+  border-radius: 5px;
+  background: rgba(255, 92, 122, 0.08);
+  color: #ffc4cf;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 10px;
+  cursor: pointer;
+}
+
 .mobile-tabs {
   display: none;
 }
@@ -1160,13 +1259,41 @@ input[type="range"] {
     min-height: 48px;
   }
 
-  .status-item:nth-of-type(3),
-  .status-item:nth-of-type(4) {
+  .round-pill,
+  .wallet-button {
+    grid-column: span 2;
+  }
+
+  .round-pill {
+    justify-content: center;
+    gap: 32px;
+  }
+
+  .price-source,
+  .magicblock-status {
     display: none;
+  }
+
+  .er-latency {
+    grid-column: span 2;
   }
 
   .wallet-button {
     min-height: 48px;
+  }
+
+  .market-row {
+    grid-template-columns: 34px minmax(0, 1fr) minmax(82px, auto);
+    overflow: hidden;
+  }
+
+  .market-side {
+    min-width: 74px;
+    padding-right: 0;
+  }
+
+  .market-row .mini-badge {
+    display: none;
   }
 
   .left-rail {

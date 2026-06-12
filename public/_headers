@@ -1,5 +1,6 @@
 /*
+  Content-Security-Policy: default-src 'self'; connect-src 'self' https://api.coingecko.com https://api.devnet.solana.com https://*.solana.com https://*.magicblock.app https://*.magicblock.gg; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-
