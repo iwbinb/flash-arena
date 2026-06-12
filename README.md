@@ -106,6 +106,12 @@ Submission artifact audit:
 npm run audit
 ```
 
+Live deployment check:
+
+```bash
+npm run live-check -- https://your-project.pages.dev
+```
+
 GitHub verification:
 
 - The public `Verify` workflow runs `npm run verify` on pushes and pull requests to `main`.

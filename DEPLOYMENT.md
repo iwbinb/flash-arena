@@ -24,6 +24,21 @@ Deploy with:
 npm run deploy
 ```
 
+## Post-Deploy Check
+
+After Cloudflare Pages returns a public URL, verify the live deployment:
+
+```bash
+npm run live-check -- https://your-project.pages.dev
+```
+
+The live check confirms:
+
+- The app shell is reachable.
+- Compiled JavaScript and CSS assets are referenced.
+- PWA manifest and favicon load.
+- Security headers are present.
+
 ## Environment Variables
 
 Optional:

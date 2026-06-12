@@ -22,7 +22,7 @@ const requireIncludes = (file, checks) => {
 };
 
 const packageJson = JSON.parse(read("package.json"));
-const requiredScripts = ["check", "build", "smoke", "audit", "privacy", "verify", "deploy"];
+const requiredScripts = ["check", "build", "smoke", "audit", "privacy", "verify", "live-check", "deploy"];
 for (const script of requiredScripts) {
   if (!packageJson.scripts?.[script]) {
     fail(`package.json is missing script: ${script}`);
@@ -39,6 +39,10 @@ const requiredFiles = [
   "DEPLOYMENT.md",
   "wrangler.toml",
   ".github/workflows/verify.yml",
+  "scripts/live-check.mjs",
+  "scripts/smoke-check.mjs",
+  "scripts/privacy-check.mjs",
+  "scripts/submission-audit.mjs",
   "public/manifest.webmanifest",
   "public/_headers",
   "public/favicon.svg",
@@ -95,6 +99,8 @@ requireIncludes("DEPLOYMENT.md", [
   "Framework preset: Vite",
   "Build command: `npm run build`",
   "Build output directory: `dist`",
+  "Post-Deploy Check",
+  "npm run live-check",
   "VITE_MAGICBLOCK_RPC_URL"
 ]);
 

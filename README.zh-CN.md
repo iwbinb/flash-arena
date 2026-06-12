@@ -106,6 +106,12 @@ npm run verify
 npm run audit
 ```
 
+线上部署检查：
+
+```bash
+npm run live-check -- https://your-project.pages.dev
+```
+
 GitHub 验证：
 
 - 公开的 `Verify` workflow 会在 push 和 pull request 到 `main` 时运行 `npm run verify`。

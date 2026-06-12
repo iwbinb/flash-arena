@@ -12,6 +12,7 @@
     "audit": "node scripts/submission-audit.mjs",
     "privacy": "node scripts/privacy-check.mjs",
     "verify": "npm run check && npm run smoke && npm run audit && npm run privacy",
+    "live-check": "node scripts/live-check.mjs",
     "deploy": "npm run build && wrangler pages deploy dist --project-name flash-arena"
   },
   "dependencies": {
