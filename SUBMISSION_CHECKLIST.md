@@ -21,6 +21,7 @@
 - [ ] Leaderboard updates after user trades.
 - [ ] Recent trades update after open and close actions.
 - [ ] ER settlement log updates after arena actions.
+- [ ] ER pipeline explains trade intent, ephemeral state, batch/root, and leaderboard snapshot.
 - [ ] Submission summary can be copied and round report can be exported.
 - [ ] Submission readiness panel reflects core demo status.
 - [ ] Judge Flow tracks the key review actions.

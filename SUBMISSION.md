@@ -45,6 +45,7 @@ The first version keeps balances and positions simulated for user safety, but it
 - Conditional order queues map to temporary round state.
 - Round settlement maps to an ER batch/state snapshot.
 - Leaderboard snapshots map to fast competition state finality.
+- The in-app ER pipeline shows the review path from trade intent to ephemeral state, batch/root, and leaderboard snapshot.
 - The RPC health surface can point to a MagicBlock-compatible endpoint through `VITE_MAGICBLOCK_RPC_URL`.
 
 ## Why Demo Funds
@@ -57,7 +58,7 @@ The hackathon demo should be easy for judges to run without deposits, custody, o
 - P2 Trading and risk: long, short, market, limit, stop, leverage, margin, fees, liquidation estimate, account risk summary, close, cancel.
 - P3 Market feed: public live prices with fallback simulator, chart timeframe controls, candle and line modes.
 - P4 Competition: expandable leaderboard, filterable recent trades, rank, final settlement, round reset, exportable round evidence.
-- P5 Solana and MagicBlock: wallet identity, devnet RPC health, ER settlement log, MagicBlock-ready state model.
+- P5 Solana and MagicBlock: wallet identity, devnet RPC health, ER settlement log, ER pipeline, MagicBlock-ready state model.
 - P6 Delivery: README, Chinese README, requirements, deployment guide, smoke check, CI, readiness panel, Judge Flow, Cloudflare Pages config.
 
 ## Demo Video Script

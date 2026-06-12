@@ -54,6 +54,7 @@ This keeps the product credible for a trading hackathon while keeping implementa
 - Manual and automatic round settlement
 - Arena leaderboard with the current player highlighted
 - Expandable leaderboard, filterable recent trades stream, and ER settlement log
+- MagicBlock ER pipeline showing trade intent, ephemeral state, batch/root, and leaderboard snapshot
 - RPC health surface
 - Copyable submission summary and downloadable round report
 - In-app submission readiness panel for judge-facing acceptance status

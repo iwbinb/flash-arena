@@ -54,6 +54,7 @@ Flash Arena 建议使用混合数据方案：
 - 手动和自动回合结算
 - 当前玩家高亮的竞技场排行榜
 - 可展开排行榜、可筛选 Recent trades 交易流和 ER settlement log
+- MagicBlock ER pipeline，展示 trade intent、ephemeral state、batch/root 和 leaderboard snapshot
 - RPC 健康状态展示
 - 可复制提交摘要和可下载回合报告
 - 应用内提交就绪面板，用于评委验收状态展示

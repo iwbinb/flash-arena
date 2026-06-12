@@ -1463,12 +1463,27 @@ function RecentTrades({ trades, markets }: { trades: TradeEvent[]; markets: Mark
 function ErLog({ events }: { events: ErEvent[] }) {
   const [showAll, setShowAll] = useState(false);
   const visibleEvents = showAll ? events : events.slice(0, 5);
+  const pipelineSteps = [
+    { label: "Trade intent", value: "Order accepted" },
+    { label: "Ephemeral state", value: "Round book updated" },
+    { label: "Batch/root", value: events[0]?.root ?? "pending root" },
+    { label: "Snapshot", value: "Rank + PnL finality" }
+  ];
 
   return (
     <section className="panel er-log">
       <div className="panel-title">
         <span>ER Settlement Log</span>
         <button className="text-button" aria-expanded={showAll} onClick={() => setShowAll((value) => !value)}>{showAll ? "Latest" : "View all"}</button>
+      </div>
+      <div className="er-pipeline" aria-label="MagicBlock ER state pipeline">
+        {pipelineSteps.map((step, index) => (
+          <div key={step.label}>
+            <b>{index + 1}</b>
+            <span>{step.label}</span>
+            <strong>{step.value}</strong>
+          </div>
+        ))}
       </div>
       <div className="table">
         <div className="table-head er-grid">

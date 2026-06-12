@@ -94,6 +94,7 @@ const checks = [
       ["devnet fallback RPC exists", includes(source.app, "https://api.devnet.solana.com")],
       ["RPC health check uses getSlot", includes(source.app, '"getSlot"') && includes(source.app, "setErLatency")],
       ["ER log component exists", includes(source.app, "function ErLog") && includes(source.app, "ER Settlement Log")],
+      ["ER pipeline explains MagicBlock state flow", includes(source.app, "Trade intent") && includes(source.app, "Ephemeral state") && includes(source.app, "Batch/root") && includes(source.app, "Rank + PnL finality") && includes(source.styles, ".er-pipeline")],
       ["ER events cover accepted, batch, state, settlement, and snapshot concepts", ["Trade Accepted", "Batch Committed", "State Root Update", "Trade Settled", "Leaderboard Snapshot"].every((event) => includes(source.app + source.marketData, event))],
       ["requirements document defines P5", includes(source.requirements, "P5: Solana and MagicBlock Story")]
     ]
